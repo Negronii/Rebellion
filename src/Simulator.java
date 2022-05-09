@@ -27,12 +27,13 @@ public class Simulator {
         }
         initMap();
         setup();
-        while (true) go();
+        new GUI();
     }
 
     public static void setup() {
         initMap();
         generateTurtles();
+
     }
 
     public static void go() {
@@ -57,6 +58,7 @@ public class Simulator {
             unUsedKeys.remove(0);
         }
         // generate cops
+        System.out.println(nCop);
         for (int i = 0; i < nCop; i++) {
             Coord key = unUsedKeys.get(0);
             Cop cop = new Cop(i, key.x, key.y);

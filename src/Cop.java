@@ -24,8 +24,10 @@ public class Cop extends Turtle {
         Agent targetActive =
                 actives.get(Simulator.random.nextInt(actives.size()));
         // go to the active's place
+        Simulator.map.get(new Coord(x, y)).remove(this);
         x = targetActive.x;
         y = targetActive.y;
+        Simulator.map.get(new Coord(x, y)).add(this);
         // enforce it
         targetActive.isActive = false;
         targetActive.jailTerm = Simulator.random.nextInt(Params.maxJailTerm);
