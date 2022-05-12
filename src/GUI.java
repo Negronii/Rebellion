@@ -97,7 +97,7 @@ public class GUI {
                 if (Simulator.map.containsKey(new Coord(e.getX() / 20,
                         e.getY() / 20)) &&
                         !Simulator.map.get(new Coord(e.getX() / 20,
-                        e.getY() / 20)).isEmpty()){
+                                e.getY() / 20)).isEmpty()) {
                     for (Turtle turtle :
                             Simulator.map.get(new Coord(e.getX() / 20,
                                     e.getY() / 20))) {
@@ -133,9 +133,14 @@ public class GUI {
         // create go button and logic
         goButton = new JButton("go");
         ActionListener goListener = e -> {
-            Simulator.go();
-            panel.removeAll();
-            panel.updateUI();
+            if (Simulator.map.containsKey(new Coord(0, 0))) {
+                Simulator.go();
+                panel.removeAll();
+                panel.updateUI();
+            } else {
+                textArea.setText("please set up before go!");
+                subFrame.setVisible(true);
+            }
         };
         goButton.addActionListener(goListener);
 
@@ -189,8 +194,8 @@ public class GUI {
         // add everything into a sidebar on frame window
         tools = new JPanel();
         tools.setLayout(new GridLayout(20, 1));
-        tools.add(goButton);
         tools.add(setupButton);
+        tools.add(goButton);
         tools.add(nRunText);
         tools.add(nRun);
         tools.add(nRunButton);
