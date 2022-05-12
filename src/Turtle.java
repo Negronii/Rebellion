@@ -9,6 +9,7 @@ public abstract class Turtle {
         this.y = y;
     }
 
+    // decide where to move for this turtle
     public void move() {
         ArrayList<Coord> neighbour = Coord.findNeighbour(new Coord(x, y));
         // remove cop's or not-in-jail agent's coordinates
@@ -43,5 +44,6 @@ public abstract class Turtle {
         y = randomCoordinate.y;
     }
 
+    // see what it will update in each tick
     public abstract void go();
 }

@@ -2,7 +2,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Coord {
+    // x-axis position of this coordinate
     public int x;
+    // y-axis position of this coordinate
     public int y;
 
     public Coord(int x, int y) {
@@ -31,6 +33,7 @@ public class Coord {
         return neighbour;
     }
 
+    // rewrite equals so that it will not only compare by object id
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -39,16 +42,9 @@ public class Coord {
         return x == coord.x && y == coord.y;
     }
 
+    // rewrite hashCode so that it will not only compare by object id
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
-    }
-
-    @Override
-    public String toString() {
-        return "Coord{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
     }
 }

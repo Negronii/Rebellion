@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -8,6 +10,12 @@ public class Simulator {
 
     // the key is coordinate and the value is all agent and cops on it
     public static HashMap<Coord, ArrayList<Turtle>> map = new HashMap<>();
+
+    // number of active at end of each turn
+    public static ArrayList<Integer> nActiveList = new ArrayList<>();
+
+    // number of jailed at end of each turn
+    public static ArrayList<Integer> nJailList = new ArrayList<>();
 
     // number of cops in the simulation
     public static int nCop = (int) Math.round(Params.initial_cop_density
@@ -25,24 +33,25 @@ public class Simulator {
         if (nCop + nAgent > Params.width * Params.length) {
             throw new Exception("toooooooooo crowded!");
         }
-        initMap();
-        setup();
         new GUI();
     }
 
+    // set up the system
     public static void setup() {
-        initMap();
+        init();
         generateTurtles();
-
     }
 
+    // go one tick
     public static void go() {
         Collections.shuffle(turtles);
         for (Turtle turtle : turtles) {
             turtle.go();
         }
+        countActiveJail();
     }
 
+    // generate all turtles
     public static void generateTurtles() {
         // an arraylist of all un occupied keys
         ArrayList<Coord> unUsedKeys =
@@ -58,7 +67,6 @@ public class Simulator {
             unUsedKeys.remove(0);
         }
         // generate cops
-        System.out.println(nCop);
         for (int i = 0; i < nCop; i++) {
             Coord key = unUsedKeys.get(0);
             Cop cop = new Cop(i, key.x, key.y);
@@ -68,14 +76,49 @@ public class Simulator {
         }
     }
 
-    // initiate the map with empty Arraylist
-    public static void initMap() {
+    // initiate the system, clear all stored data
+    public static void init() {
         for (int i = 0; i < Params.width; i++) {
             for (int j = 0; j < Params.length; j++) {
                 map.put(new Coord(i, j), new ArrayList<>());
             }
         }
+        turtles.clear();
+        nActiveList.clear();
+        nJailList.clear();
     }
 
+    // count the number of active and jail
+    public static void countActiveJail() {
+        int nActive = 0, nJail = 0;
+        for (Turtle turtle :
+                turtles) {
+            if (turtle instanceof Agent && ((Agent) turtle).isActive) nActive++;
+            if (turtle instanceof Agent && ((Agent) turtle).jailTerm > 0)
+                nJail++;
+        }
+        nActiveList.add(nActive);
+        nJailList.add(nJail);
+    }
 
+    // save file to indicated file name
+    public static void writeToCsv(String fileName) {
+        try {
+            FileWriter fw = new FileWriter(fileName);
+            fw.append("active");
+            fw.append(',');
+            fw.append("jail");
+            fw.append('\n');
+            for (int i = 0; i < nActiveList.size(); i++) {
+                fw.append(nActiveList.get(i).toString());
+                fw.append(',');
+                fw.append(nJailList.get(i).toString());
+                fw.append('\n');
+            }
+            fw.flush();
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

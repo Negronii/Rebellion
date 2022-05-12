@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 
 public class Cop extends Turtle {
+
+    // unique id of the cop turtle
     public final int id;
 
     public Cop(int id, int x, int y) {
@@ -8,6 +10,7 @@ public class Cop extends Turtle {
         this.id = id;
     }
 
+    // enforce an active agent within its vision
     public void enforce() {
         // find all active agents nearby
         ArrayList<Agent> actives = new ArrayList<>();
