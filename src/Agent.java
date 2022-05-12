@@ -55,4 +55,17 @@ public class Agent extends Turtle {
             jailTerm--;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Agent{" +
+                "id=" + id +
+                ", riskAversion=" + riskAversion +
+                ", perceivedHardship=" + perceivedHardship +
+                ", isActive=" + isActive +
+                ", jailTerm=" + jailTerm +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

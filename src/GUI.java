@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class GUI {
     // the frame shown
@@ -30,15 +32,23 @@ public class GUI {
     // the button to save file
     JButton saveFile;
 
+    //
+    JTextArea textArea;
+
     // the main panel
     JPanel panel;
 
     // the sidebar panel
     JPanel tools;
 
+    // the sub frame for more information
+    JFrame subFrame;
+
     public GUI() {
         frame = new JFrame();
+        subFrame = new JFrame();
         frame.setSize(10 * Params.width, 10 * Params.length);
+        subFrame.setSize(400, 400);
 
         // this is the main panel that draws circles
         // red circles represents active agents
@@ -79,6 +89,46 @@ public class GUI {
         };
         panel.setBorder(BorderFactory.createEmptyBorder(400, 400,
                 400, 400));
+        // add function when clicking on a point, opens sub frame to show detail
+        MouseListener mouseListener = new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                textArea.setText("");
+                if (Simulator.map.containsKey(new Coord(e.getX() / 20,
+                        e.getY() / 20)) &&
+                        !Simulator.map.get(new Coord(e.getX() / 20,
+                        e.getY() / 20)).isEmpty()){
+                    for (Turtle turtle :
+                            Simulator.map.get(new Coord(e.getX() / 20,
+                                    e.getY() / 20))) {
+                        textArea.setText(textArea.getText() + turtle.toString()
+                                + '\n');
+                    }
+                    subFrame.setVisible(true);
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        };
+        panel.addMouseListener(mouseListener);
 
         // create go button and logic
         goButton = new JButton("go");
@@ -121,12 +171,20 @@ public class GUI {
 
         textFileName = new JLabel("please enter a file name to save as " +
                 ".csv");
+
         fileName = new JTextField("dataSample.csv");
+        // create save file button and its logic
         saveFile = new JButton("save file");
         ActionListener saveListener = e -> {
             Simulator.writeToCsv(fileName.getText());
         };
         saveFile.addActionListener(saveListener);
+
+        // create sub-frame information bar
+        textArea = new JTextArea(10, 20);
+        textArea.setWrapStyleWord(true);
+        textArea.setLineWrap(true);
+        textArea.setEditable(false);
 
         // add everything into a sidebar on frame window
         tools = new JPanel();
@@ -139,6 +197,7 @@ public class GUI {
         tools.add(textFileName);
         tools.add(fileName);
         tools.add(saveFile);
+        subFrame.add(textArea);
         frame.add(tools, BorderLayout.EAST);
         frame.add(panel, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -146,5 +205,4 @@ public class GUI {
         frame.pack();
         frame.setVisible(true);
     }
-
 }

@@ -41,4 +41,13 @@ public class Cop extends Turtle {
         move();
         enforce();
     }
+
+    @Override
+    public String toString() {
+        return "Cop{" +
+                "id=" + id +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
