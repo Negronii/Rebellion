@@ -44,6 +44,11 @@ public class Agent extends Turtle {
         jailTerm = terms;
     }
 
+    @Override
+    public void move() {
+        if (Params.movement) super.move();
+    }
+
     // what it will do in this tick, logic comes from netlogo library module
     // Rebellion code
     @Override
