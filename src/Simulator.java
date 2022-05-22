@@ -11,6 +11,9 @@ public class Simulator {
     // the key is coordinate and the value is all agent and cops on it
     public static HashMap<Coord, ArrayList<Turtle>> map = new HashMap<>();
 
+    // number of quiet at end of each turn
+    public static ArrayList<Integer> nQuietList = new ArrayList<>();
+
     // number of active at end of each turn
     public static ArrayList<Integer> nActiveList = new ArrayList<>();
 
@@ -90,13 +93,14 @@ public class Simulator {
 
     // count the number of active and jail
     public static void countActiveJail() {
-        int nActive = 0, nJail = 0;
+        int nQuiet = 0, nActive = 0, nJail = 0;
         for (Turtle turtle :
                 turtles) {
             if (turtle instanceof Agent && ((Agent) turtle).isActive) nActive++;
-            if (turtle instanceof Agent && ((Agent) turtle).jailTerm > 0)
-                nJail++;
+            else if (turtle instanceof Agent && ((Agent) turtle).jailTerm > 0) nJail++;
+            else nQuiet++;
         }
+        nQuietList.add(nQuiet);
         nActiveList.add(nActive);
         nJailList.add(nJail);
     }
@@ -105,14 +109,31 @@ public class Simulator {
     public static void writeToCsv(String fileName) {
         try {
             FileWriter fw = new FileWriter(fileName);
-            fw.append("active");
+            fw.append("time");
+            fw.append(',');
+            fw.append("quite");
             fw.append(',');
             fw.append("jail");
+            fw.append(',');
+            fw.append("active");
             fw.append('\n');
+            fw.append('0');
+            fw.append(',');
+            fw.append(Integer.toString(nAgent));
+            fw.append(',');
+            fw.append('0');
+            fw.append(',');
+            fw.append('0');
+            fw.append('\n');
+
             for (int i = 0; i < nActiveList.size(); i++) {
-                fw.append(nActiveList.get(i).toString());
+                fw.append(Integer.toString(i+1));
+                fw.append(',');
+                fw.append(nQuietList.get(i).toString());
                 fw.append(',');
                 fw.append(nJailList.get(i).toString());
+                fw.append(',');
+                fw.append(nActiveList.get(i).toString());
                 fw.append('\n');
             }
             fw.flush();
@@ -122,3 +143,4 @@ public class Simulator {
         }
     }
 }
+
