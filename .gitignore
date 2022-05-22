@@ -1,0 +1,4 @@
+*.class
+.DS*
+*.csv
+out*
