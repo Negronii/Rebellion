@@ -39,25 +39,5 @@ def writeOutput(data, repetition, outPrefix):
         with open(outName, 'w') as f:
             write = csv.writer(f)
             write.writerows(result[r])
-# print(repetition)
+
 writeOutput(data, repetition, filePrefix)
-# fields = ['t', 'q', 'j', 'a']
-# rows = []
-# for i in range(len(data)):
-#     # print("q = " + str(data[i][qI]))
-#     row = []
-#     row.append(i)
-#     # row.append(data[i][qI])
-#     # row.append(data[i][jI])
-#     # row.append(data[i][aI])
-#     rows.append(row)
-
-# print(sys.argv)
-
-# with open('processedData/out.csv', 'w') as f:
-      
-#     # using csv.writer method from CSV package
-#     write = csv.writer(f)
-#     write.writerow(fields)
-#     write.writerows(rows)
-
