@@ -33,7 +33,8 @@ public class Cop extends Turtle {
         Simulator.map.get(new Coord(x, y)).add(this);
         // enforce it
         targetActive.isActive = false;
-        targetActive.jailTerm = Simulator.random.nextInt(Params.maxJailTerm);
+        targetActive.jailTerm = (Params.maxJailTerm == 0) ? 0 :
+                Simulator.random.nextInt(Params.maxJailTerm);
     }
 
     @Override
