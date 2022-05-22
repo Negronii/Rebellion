@@ -35,7 +35,7 @@ def writeOutput(data, repetition, outPrefix):
             row.append(data[i][r*3+3])
             result[r].append(row)
     for r in range(repetition):
-        outName = 'processedData/' + outPrefix + str(r) + '.csv'
+        outName = 'processedData/' + outPrefix + 'NetLogo' + str(r) + '.csv'
         with open(outName, 'w') as f:
             write = csv.writer(f)
             write.writerows(result[r])
