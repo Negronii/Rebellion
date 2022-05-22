@@ -87,6 +87,7 @@ public class Simulator {
             }
         }
         turtles.clear();
+        nQuietList.clear();
         nActiveList.clear();
         nJailList.clear();
     }
@@ -97,10 +98,9 @@ public class Simulator {
         for (Turtle turtle :
                 turtles) {
             if (turtle instanceof Agent && ((Agent) turtle).isActive) nActive++;
-            else if (turtle instanceof Agent && ((Agent) turtle).jailTerm > 0) nJail++;
-            else nQuiet++;
+            if (turtle instanceof Agent && ((Agent) turtle).jailTerm > 0) nJail++;
         }
-        nQuietList.add(nQuiet);
+        nQuietList.add(nAgent-nActive-nJail);
         nActiveList.add(nActive);
         nJailList.add(nJail);
     }

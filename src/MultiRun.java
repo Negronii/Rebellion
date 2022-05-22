@@ -3,7 +3,7 @@ public class MultiRun {
     // number of runs
     public static final int nRun = 2;
     // how many steps we want to go in each run
-    public static final int nStepsPerRun = 200;
+    public static final int nStepsPerRun = 1000;
 
     public static void main(String[] args) {
         for (int i = 0; i < nRun; i++) {
@@ -11,7 +11,9 @@ public class MultiRun {
             for (int j = 0; j < nStepsPerRun; j++) {
                 Simulator.go();
             }
-            Simulator.writeToCsv("dataSamples/DataSample"+i+".csv");
+            Simulator.writeToCsv(
+                    "dataSamples/0.04_0.7_7_0.82_30/0.04_0.7_7_0.82_30_"
+                            + (i+1) + ".csv");
         }
     }
 }
