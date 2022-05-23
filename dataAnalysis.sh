@@ -1,0 +1,1 @@
+python dataAnalysis/analyse.py -i default
