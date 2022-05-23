@@ -43,7 +43,7 @@ repetition = 50
 inputIndex = sys.argv.index('-i')
 testMode = sys.argv[inputIndex + 1]
 
-with open('dataSamples/java/0.04_0.7_7.0_0.82_30_0.csv', 'r') as openfile:
+with open('dataSamples/netlogo/0.04_0.7_7.0_0.82_30_0.csv', 'r') as openfile:
     reader = csv.reader(openfile)
     data = list(reader)
 
