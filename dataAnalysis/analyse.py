@@ -66,7 +66,8 @@ def getPeriodMean(data):
     return result/totalPeriodNum
 
 def getAmplitudeMean(data):
-    result = 0
+    maxMean = 0
+    minMean = 0
     localMaxList = []
     localMinList = []
     for i in range(2, len(data)-1):
@@ -76,8 +77,9 @@ def getAmplitudeMean(data):
             localMinList.append(i)
     totalPeriodNum = min(len(localMaxList), len(localMinList))-1
     for i in range(totalPeriodNum):
-        result += localMaxList[i]-localMinList[i]
-    return result/totalPeriodNum
+        maxMean += localMaxList[i]
+        minMean += localMinList[i]
+    return (maxMean+minMean)/totalPeriodNum
 
 def kl_divergence(p, q, agent_density):
     result = 0
@@ -112,7 +114,8 @@ if (testMode == 'default'):
     netlogoAmplitudeMeans.sort()
     javaAmplitudeMeans.sort()
 
-    plt.subplot(2, 2, 1)
+    plt.figure(figsize=(12,4))
+    plt.subplot(1, 3, 1)
     plt.hist(netlogoQuietMeans, 10, facecolor='b', alpha=0.5, label='netlogo')
     plt.hist(javaQuietMeans, 10, facecolor='r', alpha=0.5, label='java')
     plt.title('Quiet Mean Distribution')
@@ -120,17 +123,17 @@ if (testMode == 'default'):
     plt.text(780, 10, 'KL divergence = ' + str(round(kl_divergence(javaQuietMeans, netlogoQuietMeans, 0.7), 4)))
     plt.legend()
 
-    plt.subplot(2, 2, 2)
+    plt.subplot(1, 3, 2)
     plt.hist(netlogoPeriodMeans, 10, facecolor='b', alpha=0.5, label='netlogo')
     plt.hist(javaPeriodMeans, 10, facecolor='r', alpha=0.5, label='java')
     plt.title('Period Mean Distribution')
     plt.text(14, 10, 'KL divergence = ' + str(round(kl_divergence(javaPeriodMeans, netlogoPeriodMeans, 0.7), 4)))
 
-    # plt.subplot(1, 3, 3)
-    # plt.hist(netlogoAmplitudeMeans, 10, facecolor='b', alpha=0.5, label='netlogo')
-    # plt.hist(javaAmplitudeMeans, 10, facecolor='r', alpha=0.5, label='java')
-    # plt.title('Amplitude Mean Distribution')
-    # plt.text(14, 10, 'KL divergence = ' + str(round(kl_divergence(javaAmplitudeMeans, netlogoAmplitudeMeans, 0.7), 4)))
+    plt.subplot(1, 3, 3)
+    plt.hist(netlogoAmplitudeMeans, 10, facecolor='b', alpha=0.5, label='netlogo')
+    plt.hist(javaAmplitudeMeans, 10, facecolor='r', alpha=0.5, label='java')
+    plt.title('Amplitude Mean Distribution')
+    plt.text(850, 12, 'KL divergence = ' + str(round(kl_divergence(javaAmplitudeMeans, netlogoAmplitudeMeans, 0.7), 4)))
     # print(javaAmplitudeMeans)
     # print(netlogoAmplitudeMeans)
 
