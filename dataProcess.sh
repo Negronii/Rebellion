@@ -1,3 +1,3 @@
 # rm -r processedData
 # mkdir processedData
-python dataProcessing/processor.py -i inputData/default.csv
+python3 dataProcessing/processor.py -i inputData/default.csv

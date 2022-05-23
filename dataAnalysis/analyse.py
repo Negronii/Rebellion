@@ -1,4 +1,4 @@
-import sys, csv
+import sys, csv, math
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -39,6 +39,7 @@ default_test = {"cop":0.04,
             "max_jail_term":30}
 
 repetition = 50
+mapSize = 1600
 
 inputIndex = sys.argv.index('-i')
 testMode = sys.argv[inputIndex + 1]
@@ -60,7 +61,12 @@ def getPeriodMean(data):
     for i in range(len(localMaxList)-1):
         result += localMaxList[i+1]-localMaxList[i]
     return result/totalPeriodNum
-    
+
+def kl_divergence(p, q, agent_density):
+    result = 0
+    for i in range(len(q)):
+        result += p[i]/(mapSize*agent_density) * math.log(p[i]/q[i])
+    return result
 
 
 with open('dataSamples/netlogo/0.04_0.7_7.0_0.82_30_0.csv', 'r') as openfile:
@@ -68,17 +74,22 @@ with open('dataSamples/netlogo/0.04_0.7_7.0_0.82_30_0.csv', 'r') as openfile:
     data = list(reader)
 
 if (testMode == 'default'):
-    quietMeans = []
+    netlogoQuietMeans = []
+    javaQuietMeans = []
     # periodMeans = []
     for i in range(repetition):
         with open('dataSamples/netlogo/0.04_0.7_7.0_0.82_30_'+str(i)+'.csv', 'r') as openfile:
             reader = csv.reader(openfile)
             data = list(reader)
-        quietMeans.append(getQuietMean(data))
-    # qMean = np.array(quietMeans)
-    # print(qMean)
-    plt.hist(quietMeans, 10, facecolor='g', alpha=0.5, label='netlogo')
+        netlogoQuietMeans.append(getQuietMean(data))
+        with open('dataSamples/java/0.04_0.7_7.0_0.82_30_'+str(i)+'.csv', 'r') as openfile:
+            reader = csv.reader(openfile)
+            data = list(reader)
+        javaQuietMeans.append(getQuietMean(data))
+    plt.hist(netlogoQuietMeans, 10, facecolor='b', alpha=0.5, label='netlogo')
+    plt.hist(javaQuietMeans, 10, facecolor='r', alpha=0.5, label='java')
     plt.title('Quiet Mean Distribution')
     plt.xlim(770, 880)
+    plt.text(780, 10, 'kl divergence = ' + str(kl_divergence(javaQuietMeans, netlogoQuietMeans, 0.7)))
     plt.legend()
     plt.show()
