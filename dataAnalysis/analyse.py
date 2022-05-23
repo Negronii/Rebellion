@@ -43,11 +43,42 @@ repetition = 50
 inputIndex = sys.argv.index('-i')
 testMode = sys.argv[inputIndex + 1]
 
+def getQuietMean(data):
+    totalTime = 1000
+    result = 0
+    for i in range(1, len(data)):
+        result += int(data[i][1])
+    return result/1000
+
+def getPeriodMean(data):
+    result = 0
+    localMaxList = []
+    for i in range(2, len(data)-1):
+        if (int(data[i][1]) > int(data[i-1][1])) and (int(data[i][1]) > int(data[i+1][1])):
+            localMaxList.append(i)
+    totalPeriodNum = len(localMaxList)-1
+    for i in range(len(localMaxList)-1):
+        result += localMaxList[i+1]-localMaxList[i]
+    return result/totalPeriodNum
+    
+
+
 with open('dataSamples/netlogo/0.04_0.7_7.0_0.82_30_0.csv', 'r') as openfile:
     reader = csv.reader(openfile)
     data = list(reader)
 
 if (testMode == 'default'):
     quietMeans = []
-    print(data[:200])
     # periodMeans = []
+    for i in range(repetition):
+        with open('dataSamples/netlogo/0.04_0.7_7.0_0.82_30_'+str(i)+'.csv', 'r') as openfile:
+            reader = csv.reader(openfile)
+            data = list(reader)
+        quietMeans.append(getQuietMean(data))
+    # qMean = np.array(quietMeans)
+    # print(qMean)
+    plt.hist(quietMeans, 10, facecolor='g', alpha=0.5, label='netlogo')
+    plt.title('Quiet Mean Distribution')
+    plt.xlim(770, 880)
+    plt.legend()
+    plt.show()
