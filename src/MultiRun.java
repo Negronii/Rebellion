@@ -10,7 +10,7 @@ public class MultiRun {
     public static double[] agent = {0.7, 0.40, 0.50, 0.60, 0.80, 0.90};
     public static int[] vision = {7, 2, 4, 6, 8, 10};
     public static double[] legit = {0.82, 0.2, 0.4, 0.6, 0.8, 1.0};
-    public static int[] jail = {30, 0, 10, 20, 50, 50};
+    public static int[] jail = {30, 0, 10, 20, 40, 50};
 
 
     public static void main(String[] args) {
