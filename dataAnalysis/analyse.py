@@ -76,20 +76,33 @@ with open('dataSamples/netlogo/0.04_0.7_7.0_0.82_30_0.csv', 'r') as openfile:
 if (testMode == 'default'):
     netlogoQuietMeans = []
     javaQuietMeans = []
-    # periodMeans = []
+    netlogoPeriodMeans = []
+    javaPeriodMeans = []
     for i in range(repetition):
         with open('dataSamples/netlogo/0.04_0.7_7.0_0.82_30_'+str(i)+'.csv', 'r') as openfile:
             reader = csv.reader(openfile)
             data = list(reader)
         netlogoQuietMeans.append(getQuietMean(data))
+        netlogoPeriodMeans.append(getPeriodMean(data))
         with open('dataSamples/java/0.04_0.7_7.0_0.82_30_'+str(i)+'.csv', 'r') as openfile:
             reader = csv.reader(openfile)
             data = list(reader)
         javaQuietMeans.append(getQuietMean(data))
+        javaPeriodMeans.append(getPeriodMean(data))
+    
+    plt.subplot(1, 2, 1)
     plt.hist(netlogoQuietMeans, 10, facecolor='b', alpha=0.5, label='netlogo')
     plt.hist(javaQuietMeans, 10, facecolor='r', alpha=0.5, label='java')
     plt.title('Quiet Mean Distribution')
     plt.xlim(770, 880)
-    plt.text(780, 10, 'kl divergence = ' + str(kl_divergence(javaQuietMeans, netlogoQuietMeans, 0.7)))
+    plt.text(780, 10, 'KL divergence = ' + str(round(kl_divergence(javaQuietMeans, netlogoQuietMeans, 0.7), 4)))
     plt.legend()
+
+    plt.subplot(1, 2, 2)
+    plt.hist(netlogoPeriodMeans, 10, facecolor='b', alpha=0.5, label='netlogo')
+    plt.hist(javaPeriodMeans, 10, facecolor='r', alpha=0.5, label='java')
+    plt.title('Period Mean Distribution')
+    plt.text(14, 10, 'KL divergence = ' + str(round(kl_divergence(javaPeriodMeans, netlogoPeriodMeans, 0.7), 4)))
+
     plt.show()
+    
