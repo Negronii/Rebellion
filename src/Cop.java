@@ -4,6 +4,10 @@ public class Cop extends Turtle {
 
     // unique id of the cop turtle
     public final int id;
+    // the corruption, value randomly lies between 0 and corruption
+    public final double corruption =
+            Simulator.random.nextDouble()*Params.corruption;
+//    public final double corruption = 1;
 
     public Cop(int id, int x, int y) {
         super(x, y);
@@ -23,6 +27,9 @@ public class Cop extends Turtle {
         }
         // no active agents, do nothing
         if (actives.isEmpty()) return;
+        // cop successfully enforce an active agent based on its corruption
+        if (Params.extension) { if(Simulator.random.nextDouble()<corruption)
+            return;}
         // find a random targetActive
         Agent targetActive =
                 actives.get(Simulator.random.nextInt(actives.size()));

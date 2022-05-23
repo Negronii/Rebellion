@@ -7,6 +7,9 @@ public class Params {
     public static double threshold = 0.10;
     public static int maxJailTerm = 30;
     public static boolean movement = true;
+
+    public static boolean extension = true;
+    public static double corruption = 1;
     // length refers to y-axis
     public static int length = 40;
     // width refers to x-axis
