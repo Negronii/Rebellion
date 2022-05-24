@@ -90,6 +90,10 @@ public class Simulator {
         nQuietList.clear();
         nActiveList.clear();
         nJailList.clear();
+        nCop = (int) Math.round(Params.initial_cop_density
+                * Params.width * Params.length);
+        nAgent = (int) Math.round(Params.initial_agent_density
+                * Params.width * Params.length);
     }
 
     // count the number of active and jail
