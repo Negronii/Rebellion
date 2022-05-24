@@ -44,6 +44,7 @@ public class MultiRun {
             runOneFeature();
         }
         Params.maxJailTerm = jail[0];
+        System.out.println("The experiments have finished.");
     }
 
     // run nRun times with nStepRun steps, output file name as parameters
@@ -53,7 +54,7 @@ public class MultiRun {
             for (int j = 0; j < nStepsPerRun; j++) {
                 Simulator.go();
             }
-            Simulator.writeToCsv("dataSamples/"
+            Simulator.writeToCsv("dataSamples/java/"
                     + Params.initial_cop_density + "_"
                     + Params.initial_agent_density + "_"
                     + Params.vision + "_"
