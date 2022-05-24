@@ -50,6 +50,12 @@ public class MultiRun {
     // run nRun times with nStepRun steps, output file name as parameters
     public static void runOneFeature(){
         for (int i = 0; i < nRun; i++) {
+            System.out.println("Now running"+"dataSamples/java/"
+                    + Params.initial_cop_density + "_"
+                    + Params.initial_agent_density + "_"
+                    + Params.vision + "_"
+                    + Params.government_legitimacy + "_"
+                    + Params.maxJailTerm + "_" + i + ".csv");
             Simulator.setup();
             for (int j = 0; j < nStepsPerRun; j++) {
                 Simulator.go();
