@@ -47,7 +47,7 @@ def writeOutput(data, runNumber):
             row.append(data[i][r*3+3])
             result[r].append(row)
     for r in range(runNumber):
-        outName = 'dataSamples/netlogo/'+str(float(jobInfo[COP][r*3+1])/100)+'_'+str(float(jobInfo[AGT][r*3+1])/100)+'_'+str(float(jobInfo[VIS][r*3+1]))+'_'+jobInfo[GOV][r*3+1]+'_'+jobInfo[MJT][r*3+1]+'_'+ str(r%repetition) + '.csv'
+        outName = 'dataSamples/netlogo/'+str(float(jobInfo[COP][r*3+1])/100)+'_'+str(float(jobInfo[AGT][r*3+1])/100)+'_'+str(float(jobInfo[VIS][r*3+1]))+'_'+str(float(jobInfo[GOV][r*3+1]))+'_'+jobInfo[MJT][r*3+1]+'_'+ str(r%repetition) + '.csv'
         with open(outName, 'w') as f:
             write = csv.writer(f)
             write.writerows(result[r])
