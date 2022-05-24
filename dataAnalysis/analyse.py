@@ -3,35 +3,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 
-cop_test = {"cop":[0.01, 0.04, 0.02, 0.06, 0.08, 0.1],
-            "agent":0.7,
-            "vision":7,
-            "legit":0.82,
-            "MJT":30}
-
-agent_test = {"cop":0.04,
-            "agent":[0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
-            "vision":7,
-            "legit":0.82,
-            "MJT":30}
-
-vision_test = {"cop":0.04,
-            "agent":0.7,
-            "vision":[2, 4, 6, 7, 8, 10],
-            "legit":0.82,
-            "MJT":30}
-
-legit_test = {"cop":0.04,
-            "agent":0.7,
-            "vision":7,
-            "legit":[0.2, 0.4, 0.6, 0.8, 0.82, 1.0],
-            "MJT":30}
-
-MJT_test = {"cop":0.04,
-            "agent":0.7,
-            "vision":7,
-            "legit":0.82,
-            "MJT":[0, 10, 20, 30, 40, 50]}
+testParams = {"cop":[0.04, 0.01, 0.02, 0.06, 0.08, 0.1],
+            "agent":[0.7, 0.4, 0.5, 0.6, 0.8, 0.9],
+            "vision":[7, 2, 4, 6, 8, 10],
+            "legit":[0.82, 0.2, 0.4, 0.6, 0.8, 1.0],
+            "MJT":[30, 0, 10, 20, 40, 50]}
 
 default_test = {"cop":0.04,
             "agent":0.7,
@@ -40,7 +16,7 @@ default_test = {"cop":0.04,
             "MJT":30}
 
 options = ['cop', 'agent', 'vision', 'legit', 'MJT']
-
+sampleSize = 6
 repetition = 50
 mapSize = 1600
 totalTime = 1000
@@ -85,6 +61,21 @@ def kl_divergence(p, q, agent_density):
     result = 0
     for i in range(len(q)):
         result += p[i]/(mapSize*agent_density) * math.log(p[i]/q[i])
+    return result
+
+def filePrefixGenerator(testMode):
+    params = []
+    result = []
+    for i in range(sampleSize):
+        oneParamList = []
+        for o in range(len(options)):
+            if options[o] == testMode:
+                oneParamList.append(testParams[testMode][i])
+            else:
+                oneParamList.append(testParams[options[o]][0])
+        params.append(oneParamList)
+    for i in range(len(params)):
+        result.append(str(params[i][0])+'_'+str(params[i][1])+'_'+str(float(params[i][2]))+'_'+str(params[i][3])+'_'+str(params[i][4])+'_')
     return result
 
 if (testMode == 'default'):
@@ -134,10 +125,61 @@ if (testMode == 'default'):
     plt.hist(javaAmplitudeMeans, 10, facecolor='r', alpha=0.5, label='java')
     plt.title('Amplitude Mean Distribution')
     plt.text(850, 12, 'KL divergence = ' + str(round(kl_divergence(javaAmplitudeMeans, netlogoAmplitudeMeans, 0.7), 4)))
-    # print(javaAmplitudeMeans)
-    # print(netlogoAmplitudeMeans)
 
     plt.show()
 
 else:
-    print(testMode)
+    # print(filePrefixGenerator(testMode))
+    prefixList = filePrefixGenerator(testMode)
+    # netlogoQuietMeans = []
+    # netlogoPeriodMeans = []
+    # netlogoAmplitudeMeans = []
+    javaQuietMeans = []
+    javaPeriodMeans = []
+    javaAmplitudeMeans = []
+    for s in range(sampleSize):
+        # nQMean = 0
+        # nPMean = 0
+        # nAMean = 0
+        jQMean = 0
+        jPMean = 0
+        jAMean = 0
+        # for i in range(repetition):
+        #     with open('dataSamples/netlogo/'+prefixList[s]+str(i)+'.csv', 'r') as openfile:
+        #         reader = csv.reader(openfile)
+        #         data = list(reader)
+        #     nQMean += getQuietMean(data)
+        #     nPMean += getPeriodMean(data)
+        #     nAMean += getAmplitudeMean(data)
+        for i in range(repetition):
+            with open('dataSamples/java/'+prefixList[s]+str(i)+'.csv', 'r') as openfile:
+                reader = csv.reader(openfile)
+                data = list(reader)
+            jQMean += getQuietMean(data)
+            jPMean += getPeriodMean(data)
+            jAMean += getAmplitudeMean(data)
+        # netlogoQuietMeans.append([testParams[testMode][s],nQMean/repetition])
+        # netlogoPeriodMeans.append([testParams[testMode][s],nPMean/repetition])
+        # netlogoAmplitudeMeans.append([testParams[testMode][s],nAMean/repetition])
+        javaQuietMeans.append(jQMean/repetition)
+        javaPeriodMeans.append(jPMean/repetition)
+        javaAmplitudeMeans.append(jAMean/repetition)
+    # print(netlogoQuietMeans)
+    # print(netlogoPeriodMeans)
+    # print(netlogoAmplitudeMeans)
+    print(javaQuietMeans)
+    print(javaPeriodMeans)
+    print(javaAmplitudeMeans)
+
+    plt.figure(figsize=(12,4))
+    plt.subplot(1, 3, 1)
+    plt.scatter(testParams[testMode], javaQuietMeans)
+    plt.subplot(1, 3, 2)
+    plt.scatter(testParams[testMode], javaPeriodMeans)
+    plt.subplot(1, 3, 3)
+    plt.scatter(testParams[testMode], javaAmplitudeMeans)
+
+
+    plt.show()
+    
+            
