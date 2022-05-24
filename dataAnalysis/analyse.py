@@ -41,9 +41,7 @@ def getPeriodMean(data):
         result += localMaxList[i+1]-localMaxList[i]
     return result/totalPeriodNum
 
-def getAmplitudeMean(data):
-    maxMean = 0
-    minMean = 0
+def getAmplitude(data):
     localMaxList = []
     localMinList = []
     for i in range(2, len(data)-1):
@@ -52,10 +50,12 @@ def getAmplitudeMean(data):
         if (int(data[i][1]) < int(data[i-1][1])) and (int(data[i][1]) < int(data[i+1][1])):
             localMinList.append(i)
     totalPeriodNum = min(len(localMaxList), len(localMinList))-1
-    for i in range(totalPeriodNum):
-        maxMean += localMaxList[i]
-        minMean += localMinList[i]
-    return (maxMean+minMean)/totalPeriodNum
+    if (len(localMaxList)!=0) and (len(localMinList)!=0):
+        maxAmp = max(localMaxList)
+        minAmp = min(localMinList)
+        return (maxAmp-minAmp)/totalPeriodNum
+    else:
+        return 0.0
 
 def kl_divergence(p, q, agent_density):
     result = 0
@@ -91,13 +91,13 @@ if (testMode == 'default'):
             data = list(reader)
         netlogoQuietMeans.append(getQuietMean(data))
         netlogoPeriodMeans.append(getPeriodMean(data))
-        netlogoAmplitudeMeans.append(getAmplitudeMean(data))
+        netlogoAmplitudeMeans.append(getAmplitude(data))
         with open('dataSamples/java/0.04_0.7_7.0_0.82_30_'+str(i)+'.csv', 'r') as openfile:
             reader = csv.reader(openfile)
             data = list(reader)
         javaQuietMeans.append(getQuietMean(data))
         javaPeriodMeans.append(getPeriodMean(data))
-        javaAmplitudeMeans.append(getAmplitudeMean(data))
+        javaAmplitudeMeans.append(getAmplitude(data))
     netlogoQuietMeans.sort()
     javaQuietMeans.sort()
     netlogoPeriodMeans.sort()
@@ -124,60 +124,65 @@ if (testMode == 'default'):
     plt.hist(netlogoAmplitudeMeans, 10, facecolor='b', alpha=0.5, label='netlogo')
     plt.hist(javaAmplitudeMeans, 10, facecolor='r', alpha=0.5, label='java')
     plt.title('Amplitude Mean Distribution')
-    plt.text(850, 12, 'KL divergence = ' + str(round(kl_divergence(javaAmplitudeMeans, netlogoAmplitudeMeans, 0.7), 4)))
+    plt.text(14, 10, 'KL divergence = ' + str(round(kl_divergence(javaAmplitudeMeans, netlogoAmplitudeMeans, 0.7), 4)))
 
     plt.show()
 
 else:
-    # print(filePrefixGenerator(testMode))
     prefixList = filePrefixGenerator(testMode)
-    # netlogoQuietMeans = []
-    # netlogoPeriodMeans = []
-    # netlogoAmplitudeMeans = []
+    netlogoQuietMeans = []
+    netlogoPeriodMeans = []
+    netlogoAmplitudeMeans = []
     javaQuietMeans = []
     javaPeriodMeans = []
     javaAmplitudeMeans = []
     for s in range(sampleSize):
-        # nQMean = 0
-        # nPMean = 0
-        # nAMean = 0
+        nQMean = 0
+        nPMean = 0
+        nAMean = 0
         jQMean = 0
         jPMean = 0
         jAMean = 0
-        # for i in range(repetition):
-        #     with open('dataSamples/netlogo/'+prefixList[s]+str(i)+'.csv', 'r') as openfile:
-        #         reader = csv.reader(openfile)
-        #         data = list(reader)
-        #     nQMean += getQuietMean(data)
-        #     nPMean += getPeriodMean(data)
-        #     nAMean += getAmplitudeMean(data)
+        for i in range(repetition):
+            with open('dataSamples/netlogo/'+prefixList[s]+str(i)+'.csv', 'r') as openfile:
+                reader = csv.reader(openfile)
+                data = list(reader)
+            nQMean += getQuietMean(data)
+            nPMean += getPeriodMean(data)
+            nAMean += getAmplitude(data)
         for i in range(repetition):
             with open('dataSamples/java/'+prefixList[s]+str(i)+'.csv', 'r') as openfile:
                 reader = csv.reader(openfile)
                 data = list(reader)
             jQMean += getQuietMean(data)
             jPMean += getPeriodMean(data)
-            jAMean += getAmplitudeMean(data)
+            jAMean += getAmplitude(data)
         # netlogoQuietMeans.append([testParams[testMode][s],nQMean/repetition])
         # netlogoPeriodMeans.append([testParams[testMode][s],nPMean/repetition])
         # netlogoAmplitudeMeans.append([testParams[testMode][s],nAMean/repetition])
+        netlogoQuietMeans.append(nQMean/repetition)
+        netlogoPeriodMeans.append(nPMean/repetition)
+        netlogoAmplitudeMeans.append(nAMean/repetition)
         javaQuietMeans.append(jQMean/repetition)
         javaPeriodMeans.append(jPMean/repetition)
         javaAmplitudeMeans.append(jAMean/repetition)
-    # print(netlogoQuietMeans)
+    print(netlogoQuietMeans)
     # print(netlogoPeriodMeans)
     # print(netlogoAmplitudeMeans)
     print(javaQuietMeans)
-    print(javaPeriodMeans)
-    print(javaAmplitudeMeans)
+    # print(javaPeriodMeans)
+    # print(javaAmplitudeMeans)
 
     plt.figure(figsize=(12,4))
     plt.subplot(1, 3, 1)
     plt.scatter(testParams[testMode], javaQuietMeans)
+    plt.scatter(testParams[testMode], netlogoQuietMeans)
     plt.subplot(1, 3, 2)
     plt.scatter(testParams[testMode], javaPeriodMeans)
+    plt.scatter(testParams[testMode], netlogoPeriodMeans)
     plt.subplot(1, 3, 3)
     plt.scatter(testParams[testMode], javaAmplitudeMeans)
+    plt.scatter(testParams[testMode], netlogoAmplitudeMeans)
 
 
     plt.show()

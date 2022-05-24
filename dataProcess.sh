@@ -1,3 +1,3 @@
 # rm -r processedData
 # mkdir processedData
-python3 dataProcessing/processor.py -i inputData/agent.csv
+python3 dataProcessing/processor.py -i inputData/MJT.csv
