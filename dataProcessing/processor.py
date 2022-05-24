@@ -5,6 +5,7 @@ infoStart = 7
 infoEnd = 14
 dataStart = 22
 
+# the location of critical parameter in the netlogo output file
 GOV = 0
 AGT = 2
 VIS = 3
@@ -23,7 +24,8 @@ with open(inputFile, 'r') as openfile:
     reader = csv.reader(openfile)
     data = list(reader)
 # data = data[dataStart:]
-runNumber = int(data[6][-1])
+runNumber = int(data[6][-1]) # should be 250
+repetition = 50
 # print(data[infoStart:infoEnd])
 
 def writeOutput(data, runNumber):
@@ -45,7 +47,7 @@ def writeOutput(data, runNumber):
             row.append(data[i][r*3+3])
             result[r].append(row)
     for r in range(runNumber):
-        outName = 'dataSamples/netlogo/'+str(float(jobInfo[COP][r*3+1])/100)+'_'+str(float(jobInfo[AGT][r*3+1])/100)+'_'+str(float(jobInfo[VIS][r*3+1]))+'_'+jobInfo[GOV][r*3+1]+'_'+jobInfo[MJT][r*3+1]+'_'+ str(r) + '.csv'
+        outName = 'dataSamples/netlogo/'+str(float(jobInfo[COP][r*3+1])/100)+'_'+str(float(jobInfo[AGT][r*3+1])/100)+'_'+str(float(jobInfo[VIS][r*3+1]))+'_'+jobInfo[GOV][r*3+1]+'_'+jobInfo[MJT][r*3+1]+'_'+ str(r%repetition) + '.csv'
         with open(outName, 'w') as f:
             write = csv.writer(f)
             write.writerows(result[r])
