@@ -15,8 +15,8 @@ public class MultiRun {
 
     public static void main(String[] args) {
         // for each feature, run nRun times with nStepRun steps
-        for (int i = 1; i < cop.length; i++) {
-            Params.initial_cop_density = cop[i];
+        for (double v : cop) {
+            Params.initial_cop_density = v;
             runOneFeature();
         }
         Params.initial_cop_density = cop[0];
