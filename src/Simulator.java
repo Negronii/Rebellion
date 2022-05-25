@@ -20,6 +20,14 @@ public class Simulator {
     // number of jailed at end of each turn
     public static ArrayList<Integer> nJailList = new ArrayList<>();
 
+    // number of cops injured at end of each turn
+    public static ArrayList<Integer> nCopInjuredList = new ArrayList<>();
+
+    // number of agents injured at end of each turn
+    public static ArrayList<Integer> nAgentInjuredList = new ArrayList<>();
+
+    public  static ArrayList<Integer> nFlagList = new ArrayList<>();
+
     // number of cops in the simulation
     public static int nCop = (int) Math.round(Params.initial_cop_density
             * Params.width * Params.length);
@@ -27,6 +35,12 @@ public class Simulator {
     // the number of agents in the simulation
     public static int nAgent = (int) Math.round(Params.initial_agent_density
             * Params.width * Params.length);
+
+    // the flag of successful rebellion
+    public static boolean flag = false;
+
+    // the flag time that how many ticks that flag is true
+    public static int flagTime = 0;
 
     // a helper instance from Random class
     public static final Random random = new Random();
@@ -90,6 +104,10 @@ public class Simulator {
         nQuietList.clear();
         nActiveList.clear();
         nJailList.clear();
+        nCopInjuredList.clear();
+        nAgentInjuredList.clear();
+        nFlagList.clear();
+        flag=false;
         nCop = (int) Math.round(Params.initial_cop_density
                 * Params.width * Params.length);
         nAgent = (int) Math.round(Params.initial_agent_density
@@ -98,15 +116,46 @@ public class Simulator {
 
     // count the number of active and jail
     public static void countActiveJail() {
-        int nQuiet = 0, nActive = 0, nJail = 0;
-        for (Turtle turtle :
-                turtles) {
-            if (turtle instanceof Agent && ((Agent) turtle).isActive) nActive++;
-            if (turtle instanceof Agent && ((Agent) turtle).jailTerm > 0) nJail++;
+        int nQuiet = 0, nActive = 0, nJail = 0, nCopsInjured = 0,
+                nAgentInjured = 0;
+
+        if(Params.extension){
+            for (Turtle turtle :
+                    turtles) {
+                if (turtle instanceof Agent && ((Agent) turtle).isActive)
+                    nActive++;
+                if (turtle instanceof Agent && turtle.injuryTerm > 0)
+                    nAgentInjured++;
+                if (turtle instanceof Agent && turtle.injuryTerm == 0 &&
+                        ((Agent) turtle).jailTerm > 0)
+                    nJail++;
+                if (turtle instanceof Cop && turtle.injuryTerm > 0)
+                    nCopsInjured++;
+            }
+            if(nCopsInjured > nCop/2) flagTime ++;
+            else flagTime = 0;
+            if(flagTime>10) flag = true;
+            nQuietList.add(nAgent-nActive-nJail-nAgentInjured);
+            nActiveList.add(nActive);
+            nJailList.add(nJail);
+            nAgentInjuredList.add(nAgentInjured);
+            nCopInjuredList.add(nCopsInjured);
+            nFlagList.add(flagTime);
+
         }
-        nQuietList.add(nAgent-nActive-nJail);
-        nActiveList.add(nActive);
-        nJailList.add(nJail);
+        else{
+            for (Turtle turtle :
+                    turtles) {
+                if (turtle instanceof Agent && ((Agent) turtle).isActive)
+                    nActive++;
+                if (turtle instanceof Agent && ((Agent) turtle).jailTerm > 0)
+                    nJail++;
+
+            }
+            nQuietList.add(nAgent-nActive-nJail);
+            nActiveList.add(nActive);
+            nJailList.add(nJail);
+        }
     }
 
     // save file to indicated file name
@@ -120,6 +169,12 @@ public class Simulator {
             fw.append("jail");
             fw.append(',');
             fw.append("active");
+            fw.append(',');
+            fw.append("nCopsInjured");
+            fw.append(',');
+            fw.append("nAgentInjured");
+            fw.append(',');
+            fw.append("flag time");
             fw.append('\n');
             fw.append('0');
             fw.append(',');
@@ -138,8 +193,15 @@ public class Simulator {
                 fw.append(nJailList.get(i).toString());
                 fw.append(',');
                 fw.append(nActiveList.get(i).toString());
+                fw.append(',');
+                fw.append(nCopInjuredList.get(i).toString());
+                fw.append(',');
+                fw.append(nAgentInjuredList.get(i).toString());
+                fw.append(',');
+                fw.append(nFlagList.get(i).toString());
                 fw.append('\n');
             }
+            fw.append("Rebellion:"+flag);
             fw.flush();
             fw.close();
         } catch (IOException e) {

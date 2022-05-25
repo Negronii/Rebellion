@@ -1,3 +1,4 @@
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 
 public class Cop extends Turtle {
@@ -6,7 +7,8 @@ public class Cop extends Turtle {
     public final int id;
     // the corruption, value randomly lies between 0 and corruption
     public final double corruption =
-            Simulator.random.nextDouble()*Params.corruption;
+            Params.corruption;
+//            Simulator.random.nextDouble()*Params.corruption;
 //    public final double corruption = 1;
 
     public Cop(int id, int x, int y) {
@@ -18,9 +20,11 @@ public class Cop extends Turtle {
     public void enforce() {
         // find all active agents nearby
         ArrayList<Agent> actives = new ArrayList<>();
+        ArrayList<Cop> cops = new ArrayList<>();
         for (Coord coord : Coord.findNeighbour(new Coord(x, y))) {
             for (Turtle turtle : Simulator.map.get(coord)) {
-                if (turtle instanceof Cop) continue;
+                if (turtle instanceof Cop && turtle.injuryTerm == 0)
+                    cops.add((Cop) turtle);
                 if (turtle instanceof Agent && ((Agent) turtle).isActive)
                     actives.add((Agent) turtle);
             }
@@ -39,14 +43,38 @@ public class Cop extends Turtle {
         y = targetActive.y;
         Simulator.map.get(new Coord(x, y)).add(this);
         // enforce it
-        targetActive.isActive = false;
-        targetActive.jailTerm = Simulator.random.nextInt(Params.maxJailTerm + 1);
+        if (Params.extension) {
+            if(Simulator.random.nextDouble() <= targetActive.grievance){
+                if((cops.size()+1) * Params.equipment >= actives.size()+1) {
+                    targetActive.injuryTerm =
+                            Simulator.random.nextInt(Params.maxInjuryTerm + 1);
+                    targetActive.isActive = false;
+                    targetActive.jailTerm =
+                            Simulator.random.nextInt(Params.maxJailTerm + 1);
+                }
+                else this.injuryTerm =
+                        Simulator.random.nextInt(Params.maxInjuryTerm + 1);
+
+            }
+            else {
+                targetActive.isActive = false;
+                targetActive.jailTerm =
+                        Simulator.random.nextInt(Params.maxJailTerm+1);
+            }
+        }
+        else {
+            targetActive.isActive = false;
+            targetActive.jailTerm =
+                    Simulator.random.nextInt(Params.maxJailTerm+1);
+        }
     }
 
     @Override
     public void go() {
-        move();
-        enforce();
+        if(this.injuryTerm == 0) {
+            move();
+            enforce();
+        } else this.injuryTerm--;
     }
 
     @Override
@@ -55,6 +83,7 @@ public class Cop extends Turtle {
                 "id=" + id +
                 ", x=" + x +
                 ", y=" + y +
+                ", injuryTerm=" + injuryTerm +
                 '}';
     }
 }
