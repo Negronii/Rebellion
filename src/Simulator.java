@@ -107,6 +107,7 @@ public class Simulator {
         nCopInjuredList.clear();
         nAgentInjuredList.clear();
         nFlagList.clear();
+        flag=false;
         nCop = (int) Math.round(Params.initial_cop_density
                 * Params.width * Params.length);
         nAgent = (int) Math.round(Params.initial_agent_density
