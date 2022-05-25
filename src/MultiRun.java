@@ -11,39 +11,47 @@ public class MultiRun {
     public static int[] vision = {7, 2, 4, 6, 8, 10};
     public static double[] legit = {0.82, 0.2, 0.4, 0.6, 0.8, 1.0};
     public static int[] jail = {30, 0, 10, 20, 40, 50};
+    public static double[] corruption = {0, 0.2, 0.4, 0.6, 0.8};
 
 
     public static void main(String[] args) {
-        // for each feature, run nRun times with nStepRun steps
-        for (int i = 1; i < cop.length; i++) {
-            Params.initial_cop_density = cop[i];
-            runOneFeature();
-        }
-        Params.initial_cop_density = cop[0];
 
-        for (int i = 1; i < agent.length; i++) {
-            Params.initial_agent_density = agent[i];
-            runOneFeature();
-        }
-        Params.initial_agent_density = agent[0];
+//        runOneFeature();
+//        // for each feature, run nRun times with nStepRun steps
+//        for (int i = 1; i < cop.length; i++) {
+//            Params.initial_cop_density = cop[i];
+//            runOneFeature();
+//        }
+//        Params.initial_cop_density = cop[0];
+//
+//        for (int i = 1; i < agent.length; i++) {
+//            Params.initial_agent_density = agent[i];
+//            runOneFeature();
+//        }
+//        Params.initial_agent_density = agent[0];
+//
+//        for (int i = 1; i < vision.length; i++) {
+//            Params.vision = vision[i];
+//            runOneFeature();
+//        }
+//        Params.vision = vision[0];
+//
+//        for (int i = 1; i < legit.length; i++) {
+//            Params.government_legitimacy = legit[i];
+//            runOneFeature();
+//        }
+//        Params.government_legitimacy = legit[0];
+//
+//        for (int i = 1; i < jail.length; i++) {
+//            Params.maxJailTerm = jail[i];
+//            runOneFeature();
+//        }
+//        Params.maxJailTerm = jail[0];
 
-        for (int i = 1; i < vision.length; i++) {
-            Params.vision = vision[i];
+        for (double v : corruption) {
+            Params.corruption = v;
             runOneFeature();
         }
-        Params.vision = vision[0];
-
-        for (int i = 1; i < legit.length; i++) {
-            Params.government_legitimacy = legit[i];
-            runOneFeature();
-        }
-        Params.government_legitimacy = legit[0];
-
-        for (int i = 1; i < jail.length; i++) {
-            Params.maxJailTerm = jail[i];
-            runOneFeature();
-        }
-        Params.maxJailTerm = jail[0];
     }
 
     // run nRun times with nStepRun steps, output file name as parameters
@@ -53,12 +61,21 @@ public class MultiRun {
             for (int j = 0; j < nStepsPerRun; j++) {
                 Simulator.go();
             }
-            Simulator.writeToCsv("dataSamples/"
+//            Simulator.writeToCsv("dataSamples/java/"
+//                    + Params.initial_cop_density + "_"
+//                    + Params.initial_agent_density + "_"
+//                    + Params.vision + "_"
+//                    + Params.government_legitimacy + "_"
+//                    + Params.maxJailTerm + "_" + i + ".csv");
+            Simulator.writeToCsv("dataSamples/extension/"
                     + Params.initial_cop_density + "_"
                     + Params.initial_agent_density + "_"
                     + Params.vision + "_"
                     + Params.government_legitimacy + "_"
-                    + Params.maxJailTerm + "_" + i + ".csv");
+                    + Params.maxJailTerm + "_"
+                    + Params.movement + "_"
+                    + Params.corruption + "_"
+                    + i + ".csv");
         }
     }
 }

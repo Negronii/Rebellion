@@ -6,6 +6,8 @@ public class Agent extends Turtle {
     public final double riskAversion = Simulator.random.nextDouble();
     // the perceived hardship, value randomly lies between 0 and 1
     public final double perceivedHardship = Simulator.random.nextDouble();
+
+    public double grievance;
     // whether the agent is currently active or not
     public boolean isActive;
     // how many days left before go to jail
@@ -18,7 +20,7 @@ public class Agent extends Turtle {
 
     // determine behavior of the agent in this tick,
     public void determineBehavior() {
-        double grievance = perceivedHardship * (1 -
+        grievance = perceivedHardship * (1 -
                 Params.government_legitimacy);
         // the number of cops in vision
         double c = 0;
@@ -29,7 +31,7 @@ public class Agent extends Turtle {
             if (Simulator.map.get(coord).isEmpty()) continue;
             for (Turtle turtle : Simulator.map.get(coord)) {
                 if (turtle instanceof Agent && ((Agent) turtle).isActive) a++;
-                if (turtle instanceof Cop) c++;
+                if (turtle instanceof Cop && turtle.injuryTerm == 0) c++;
             }
         }
         // calculation details comes from netlogo library module Rebellion code
@@ -53,12 +55,14 @@ public class Agent extends Turtle {
     // Rebellion code
     @Override
     public void go() {
-        if (jailTerm == 0) {
-            move();
-            determineBehavior();
-        } else {
-            jailTerm--;
-        }
+        if (this.injuryTerm == 0) {
+            if (jailTerm == 0) {
+                move();
+                determineBehavior();
+            } else {
+                jailTerm--;
+            }
+        } else this.injuryTerm--;
     }
 
     @Override
@@ -69,6 +73,7 @@ public class Agent extends Turtle {
                 ", perceivedHardship=" + perceivedHardship +
                 ", isActive=" + isActive +
                 ", jailTerm=" + jailTerm +
+                ", injuryTerm=" + injuryTerm +
                 ", x=" + x +
                 ", y=" + y +
                 '}';

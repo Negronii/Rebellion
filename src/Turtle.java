@@ -4,6 +4,9 @@ public abstract class Turtle {
     public int x;
     public int y;
 
+    public int injuryTerm = 0;
+
+
     public Turtle(int x, int y) {
         this.x = x;
         this.y = y;
@@ -20,11 +23,23 @@ public abstract class Turtle {
                 continue;
             }
             boolean availability = true;
-            for (Turtle turtle : Simulator.map.get(coord)) {
-                if (turtle instanceof Cop || (turtle instanceof Agent &&
-                        ((Agent) turtle).jailTerm == 0)) {
-                    availability = false;
-                    break;
+            if (Params.extension) {
+                for (Turtle turtle : Simulator.map.get(coord)) {
+                    if(turtle.injuryTerm == 0){
+                        if (turtle instanceof Cop || (turtle instanceof Agent &&
+                                ((Agent) turtle).jailTerm == 0)) {
+                            availability = false;
+                            break;
+                        }
+                    }
+                }
+            } else {
+                for (Turtle turtle : Simulator.map.get(coord)) {
+                    if (turtle instanceof Cop || (turtle instanceof Agent &&
+                            ((Agent) turtle).jailTerm == 0)) {
+                        availability = false;
+                        break;
+                    }
                 }
             }
             if (availability) availableList.add(coord);

@@ -67,10 +67,16 @@ public class GUI {
                     for (Turtle turtle : Simulator.map.get(coord)
                     ) {
                         // set color for shape
-                        if (turtle instanceof Cop) g.setColor(Color.blue);
+                        if (turtle instanceof Cop){
+                            if(turtle.injuryTerm > 0)
+                                g.setColor(Color.magenta);
+                            else g.setColor(Color.blue);
+                        }
                         else if (turtle instanceof Agent) {
                             if (((Agent) turtle).isActive)
                                 g.setColor(Color.red);
+                            else if (turtle.injuryTerm > 0)
+                                g.setColor(Color.orange);
                             else if (((Agent) turtle).jailTerm > 0)
                                 g.setColor(Color.gray);
                             else g.setColor(Color.green);
