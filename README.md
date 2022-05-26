@@ -1,6 +1,6 @@
 # Rebellion Simulator
 
-# commandLine Guide
+## commandLine Guide 
 
 Open the terminal and go to the code folder.
 
@@ -46,7 +46,7 @@ For multiple run parameters, we can set them in the Main class. For save-path, w
 
 It will allow the app to save output with pre-defined parameters automatically.
 
-#GUI guide
+## GUI guide
 
 setup: set up the system and update the graph
 
