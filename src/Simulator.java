@@ -152,9 +152,9 @@ public class Simulator {
                 fw.append("injuredCop");
                 fw.append(',');
                 fw.append("injuredAgent");
+                fw.append(',');
+                fw.append("RebellionSuccessfulTurns");
             }
-            fw.append(',');
-            fw.append("RebellionSuccessfulTurns");
             fw.append('\n');
             for (int i = 0; i < nActiveList.size(); i++) {
                 fw.append(Integer.toString(i));
@@ -169,9 +169,9 @@ public class Simulator {
                     fw.append(nInjuredCopList.get(i).toString());
                     fw.append(',');
                     fw.append(nInjuredAgentList.get(i).toString());
+                    fw.append(',');
+                    fw.append(terms.get(i).toString());
                 }
-                fw.append(',');
-                fw.append(terms.get(i).toString());
                 fw.append('\n');
             }
             fw.flush();
