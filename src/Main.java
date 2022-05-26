@@ -22,8 +22,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
-            System.out.println("argument GUI to be GUI mode");
-            System.out.println("arguments x y to be repeat x times y steps");
+            System.out.println("Wrong parameters");
         } else {
             if (Objects.equals(args[0], "GUI")) {
                 if (Objects.equals(args[1], "-o"))
