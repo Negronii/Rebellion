@@ -3,7 +3,9 @@
 ## commandLine Guide 
 
 1. Open the terminal and go to the code folder.
+
 &nbsp; &nbsp; &nbsp; &nbsp; $ cd Rebellion/src
+
 &nbsp; &nbsp; &nbsp; &nbsp; $ javac *.java
 
 2. a. We can choose to run the original model as replicating the NetLogo model or run the extension model.
