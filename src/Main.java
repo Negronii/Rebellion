@@ -13,7 +13,7 @@ public class Main {
     public static double[] legit = {0.82, 0.2, 0.4, 0.6, 0.8, 1.0};
     public static int[] jail = {30, 0, 10, 20, 40, 50};
     public static double[] corruption = {0, 0.2, 0.4, 0.6, 0.8};
-    public static int sampleSize = 100;
+    public static int sampleSize = 20;
     public static double[] extensionLegit = new double[sampleSize];
     public static double[] result = new double[sampleSize];
     public static double buffer;
@@ -66,14 +66,14 @@ public class Main {
                 for (int i = 620; i < 640; i++) {
                     extensionLegit[i-620] = (double)i/1000;
                 }
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i < sampleSize; i++) {
                     simulator.government_legitimacy = extensionLegit[i];
                     runOneFeature(simulator, x, y);
                     result[i] = buffer;
                 }
                 try{
                     FileWriter fw = new FileWriter("dataSamples/extension/"
-                            + "result2" + ".csv");
+                            + "result3" + ".csv");
                     fw.append("legit");
                     fw.append(',');
                     fw.append("equipment");
@@ -141,6 +141,6 @@ public class Main {
         // System.out.println("upper: " + upperEquipment);
         // System.out.println("Finished");
         buffer = simulator.equipmentCoefficient;
-        System.out.println(simulator.government_legitimacy + ": "  + buffer);
+        System.out.println(simulator.government_legitimacy + ", "  + buffer);
     }
 }
