@@ -63,7 +63,10 @@ public class Main {
                 for (int i = 0; i < 100; i++) {
                     extensionLegit[i] = (double)i/100;
                 }
-                runOneFeature(simulator, x, y);
+                for (int i = 0; i < 100; i++) {
+                    simulator.government_legitimacy = extensionLegit[i];
+                    runOneFeature(simulator, x, y);
+                }
             }
         }
     }
@@ -108,13 +111,15 @@ public class Main {
                 upperEquipment = equipment;
                 equipment = equipment + (lowerEquipment - equipment)/2;
             }
-            System.out.println("equipment: " + equipment);
-            System.out.println("lower: " + lowerEquipment);
-            System.out.println("upper: " + upperEquipment);
+            // System.out.println("equipment: " + equipment);
+            // System.out.println("lower: " + lowerEquipment);
+            // System.out.println("upper: " + upperEquipment);
+            System.out.println("Running legitmacy of "  + simulator.government_legitimacy);
+            System.out.println("Current equipment:" + equipment);
         }
         // System.out.println("equipment: " + equipment);
         // System.out.println("lower: " + lowerEquipment);
         // System.out.println("upper: " + upperEquipment);
-        System.out.println("Finished");
+        // System.out.println("Finished");
     }
 }
