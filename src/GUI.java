@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class GUI {
+    Simulator simulator;
+
     // the frame shown
     JFrame frame;
 
@@ -44,10 +46,11 @@ public class GUI {
     // the sub frame for more information
     JFrame subFrame;
 
-    public GUI() {
+    public GUI(Simulator simulator) {
+        this.simulator = simulator;
         frame = new JFrame();
         subFrame = new JFrame();
-        frame.setSize(10 * Params.width, 10 * Params.length);
+        frame.setSize(10 * simulator.width, 10 * simulator.length);
         subFrame.setSize(400, 400);
 
         // this is the main panel that draws circles
@@ -60,19 +63,24 @@ public class GUI {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                for (Coord coord : Simulator.map.keySet()
+                for (Point coord : simulator.map.keySet()
                 ) {
-                    if (Simulator.map.get(coord).isEmpty()) continue;
+                    if (simulator.map.get(coord).isEmpty()) continue;
                     int size = 20;
-                    for (Turtle turtle : Simulator.map.get(coord)
+                    for (Turtle turtle : simulator.map.get(coord)
                     ) {
                         // set color for shape
-                        if (turtle instanceof Cop) g.setColor(Color.blue);
+                        if (turtle instanceof Cop){
+                            if (turtle.injureTerm <= 0) g.setColor(Color.blue);
+                            else g.setColor(Color.magenta);
+                        }
                         else if (turtle instanceof Agent) {
                             if (((Agent) turtle).isActive)
                                 g.setColor(Color.red);
                             else if (((Agent) turtle).jailTerm > 0)
                                 g.setColor(Color.gray);
+                            else if (turtle.injureTerm > 0)
+                                g.setColor(Color.yellow);
                             else g.setColor(Color.green);
                         }
                         // draw the shape
@@ -94,12 +102,12 @@ public class GUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 textArea.setText("");
-                if (Simulator.map.containsKey(new Coord(e.getX() / 20,
+                if (simulator.map.containsKey(new Point(e.getX() / 20,
                         e.getY() / 20)) &&
-                        !Simulator.map.get(new Coord(e.getX() / 20,
+                        !simulator.map.get(new Point(e.getX() / 20,
                                 e.getY() / 20)).isEmpty()) {
                     for (Turtle turtle :
-                            Simulator.map.get(new Coord(e.getX() / 20,
+                            simulator.map.get(new Point(e.getX() / 20,
                                     e.getY() / 20))) {
                         textArea.setText(textArea.getText() + turtle.toString()
                                 + '\n');
@@ -133,8 +141,8 @@ public class GUI {
         // create go button and logic
         goButton = new JButton("go");
         ActionListener goListener = e -> {
-            if (Simulator.map.containsKey(new Coord(0, 0))) {
-                Simulator.go();
+            if (simulator.map.containsKey(new Point(0, 0))) {
+                simulator.go();
                 panel.removeAll();
                 panel.updateUI();
             } else {
@@ -147,7 +155,7 @@ public class GUI {
         // create set-up button and logic
         setupButton = new JButton("setup");
         ActionListener setupListener = e -> {
-            Simulator.setup();
+            simulator.setup();
             panel.removeAll();
             panel.updateUI();
         };
@@ -167,7 +175,7 @@ public class GUI {
         nRunButton = new JButton("run " + nRun.getText() + " times");
         ActionListener runListener = e -> {
             for (int i = 0; i < Integer.parseInt(nRun.getText()); i++) {
-                Simulator.go();
+                simulator.go();
             }
             panel.removeAll();
             panel.updateUI();
@@ -181,7 +189,7 @@ public class GUI {
         // create save file button and its logic
         saveFile = new JButton("save file");
         ActionListener saveListener = e -> {
-            Simulator.writeToCsv(fileName.getText());
+            simulator.writeToCsv(fileName.getText());
         };
         saveFile.addActionListener(saveListener);
 
