@@ -63,8 +63,8 @@ public class Main {
                 // simulator.maxJailTerm = jail[0];
 
                 simulator.injure_extension = true;
-                for (int i = 0; i < 100; i++) {
-                    extensionLegit[i] = (double)i/100;
+                for (int i = 620; i < 640; i++) {
+                    extensionLegit[i-620] = (double)i/1000;
                 }
                 for (int i = 0; i < 100; i++) {
                     simulator.government_legitimacy = extensionLegit[i];
@@ -73,13 +73,13 @@ public class Main {
                 }
                 try{
                     FileWriter fw = new FileWriter("dataSamples/extension/"
-                            + "result" + ".csv");
+                            + "result2" + ".csv");
                     fw.append("legit");
                     fw.append(',');
                     fw.append("equipment");
                     fw.append('\n');
                     for (int i = 0; i < sampleSize; i++) {
-                        fw.append(Integer.toString(i));
+                        fw.append(""+(i/100 + 0.62));
                         fw.append(',');
                         fw.append(""+result[i]);
                         fw.append('\n');
