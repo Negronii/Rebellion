@@ -85,7 +85,7 @@ def getDissimilarity(p, q, testMode):
     pData.sort(key=mySort)
     qData.sort(key=mySort)
     for i in range(len(p)-1):
-        avgSlope += abs((pData[i+1][1]-pData[i][1])/(qData[i+1][1]-qData[i][1]))
+        avgSlope += abs(((pData[i+1][1]-pData[i][1])- (qData[i+1][1]-qData[i][1]))/(qData[i+1][1]-qData[i][1]))
     return round(avgSlope/len(p),4)
 
 def filePrefixGenerator(testMode):
