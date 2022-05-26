@@ -6,12 +6,12 @@
 $ cd Rebellion/src
 $ javac *.java
 
-2.1 We can choose to run the original model as replicating the NetLogo model or run the extension model.
+2. a. We can choose to run the original model as replicating the NetLogo model or run the extension model.
 $ java Main GUI -o  (Run the original model)
 $ java Main GUI -e  (Run the extension model)
 It will open a GUI window to run the Rebellion model.
 
-2.2 We can choose to run all parameters set in Main class. For save-path, we have to put it in the runOneFeature method. It will allow the app to save output with pre-defined parameters automatically.
+2. b.  We can choose to run all parameters set in Main class. For save-path, we have to put it in the runOneFeature method. It will allow the app to save output with pre-defined parameters automatically.
 $ java Main Multi -o x y    (It was used to generate data that we used to compare two models) 
 $ java Main Multi -e x y   (It was used to generate data that we used to analyze our research question) 
 ‘x’ means how many times to run.
