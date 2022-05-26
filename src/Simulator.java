@@ -11,7 +11,7 @@ public class Simulator {
     // basic model parameters
     public double initial_cop_density = 0.04;
     public double initial_agent_density = 0.70;
-    public double government_legitimacy = 0.67;
+    public double government_legitimacy = 0.82;
     public double vision = 7;
     public double k = 2.3;
     public double threshold = 0.10;
@@ -24,7 +24,7 @@ public class Simulator {
     public int width = 40;
 
     // extension
-    public boolean injure_extension = true;
+    public boolean injure_extension = false;
     public int maxTreatmentTerm = 10;
     public double equipmentCoefficient = 5.0;
 
