@@ -1,4 +1,5 @@
 import java.util.Objects;
+import java.io.IOException;
 import java.io.FileWriter;
 // main class to drive simulations
 // argument GUI to be GUI mode
@@ -14,6 +15,8 @@ public class Main {
     public static double[] corruption = {0, 0.2, 0.4, 0.6, 0.8};
     public static int sampleSize = 100;
     public static double[] extensionLegit = new double[sampleSize];
+    public static double[] result = new double[sampleSize];
+    public static double buffer;
 
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
@@ -66,6 +69,25 @@ public class Main {
                 for (int i = 0; i < 100; i++) {
                     simulator.government_legitimacy = extensionLegit[i];
                     runOneFeature(simulator, x, y);
+                    result[i] = buffer;
+                }
+                try{
+                    FileWriter fw = new FileWriter("dataSamples/extension/"
+                            + "result" + ".csv");
+                    fw.append("legit");
+                    fw.append(',');
+                    fw.append("equipment");
+                    fw.append('\n');
+                    for (int i = 0; i < sampleSize; i++) {
+                        fw.append(Integer.toString(i));
+                        fw.append(',');
+                        fw.append(""+result[i]);
+                        fw.append('\n');
+                    }
+                    fw.flush();
+                    fw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
                 // runOneFeature(simulator, x, y);
             }
@@ -81,10 +103,9 @@ public class Main {
         // System.out.println("equipment: " + equipment);
         // System.out.println("lower: " + lowerEquipment);
         // System.out.println("upper: " + upperEquipment);
-        while (upperEquipment - lowerEquipment > 0.1) {
+        while (upperEquipment - lowerEquipment > 0.001) {
             total = x;
             success = 0;
-            System.out.println("into for loop");
             for (int i = 0; i < x; i++) {
                 simulator.setup();
                 for (int j = 0; j < y; j++) {
@@ -104,7 +125,6 @@ public class Main {
                 //         + Params.government_legitimacy + "_"
                 //         + simulator.equipmentCoefficient + ".csv");
             }
-            System.out.println("exit for loop");
             if (success/total > 0.1) {
                 lowerEquipment = simulator.equipmentCoefficient;
                 simulator.equipmentCoefficient = simulator.equipmentCoefficient + (upperEquipment - simulator.equipmentCoefficient)/2;
@@ -115,12 +135,12 @@ public class Main {
             // System.out.println("equipment: " + equipment);
             // System.out.println("lower: " + lowerEquipment);
             // System.out.println("upper: " + upperEquipment);
-            System.out.println("Running legitmacy of "  + simulator.government_legitimacy);
-            System.out.println("Current equipment:" + simulator.equipmentCoefficient);
         }
         // System.out.println("equipment: " + equipment);
         // System.out.println("lower: " + lowerEquipment);
         // System.out.println("upper: " + upperEquipment);
         // System.out.println("Finished");
+        buffer = simulator.equipmentCoefficient;
+        System.out.println(simulator.government_legitimacy + ": "  + buffer);
     }
 }
