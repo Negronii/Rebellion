@@ -60,6 +60,7 @@ public class Simulator {
     ArrayList<Integer> terms = new ArrayList<>();
 
     public Simulator(Boolean guiOn) throws Exception {
+        // avoid total turtle number more than total grid number
         if (nCop + nAgent > width * length) {
             throw new Exception("too crowded! Reset your parameters!");
         }
@@ -110,7 +111,9 @@ public class Simulator {
 
     // count the number of each field at the moment
     public void count() {
-        int nQuiet = 0, nActive = 0, nJail = 0, nInjuredCops = 0, nInjuredAgents = 0;
+        int nQuiet = 0, nActive = 0, nJail = 0, nInjuredCops = 0,
+                nInjuredAgents = 0;
+        // count the number of each field at the moment
         for (Turtle turtle : turtles) {
             if (turtle instanceof Agent) {
                 if (((Agent) turtle).isActive) ++nActive;
@@ -120,13 +123,16 @@ public class Simulator {
             }
             if (turtle instanceof Cop && turtle.injureTerm > 0) ++nInjuredCops;
         }
+        // check if it is a successful rebellion term
+        // i.e. injured cop more than half of total cops
+        if (nInjuredCops > nCop / 2) successfulTerm++;
+        if (nInjuredCops < nCop / 2) successfulTerm = 0;
+        // add to list respectively
         nQuietList.add(nQuiet);
         nActiveList.add(nActive);
         nJailList.add(nJail);
         nInjuredCopList.add(nInjuredCops);
         nInjuredAgentList.add(nInjuredAgents);
-        if (nInjuredCops > nCop/2) successfulTerm++;
-        if (nInjuredCops < nCop/2) successfulTerm = 0;
         terms.add(successfulTerm);
     }
 
@@ -196,8 +202,7 @@ public class Simulator {
         int rDistance = (int) distance;
         for (int i = 0; i < 2 * rDistance + 1; i++) {
             for (int j = 0; j < 2 * rDistance + 1; j++) {
-                if (new Point(rDistance, rDistance).distance(i, j) - 0.0000001
-                        < distance) {
+                if (new Point(rDistance, rDistance).distance(i, j) - 0.0000001 < distance) {
                     int x = (int) (i - distance + point.x + width) % width;
                     int y = (int) (j - distance + point.y + length) % length;
                     points.add(new Point(x, y));

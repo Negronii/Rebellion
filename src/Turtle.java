@@ -1,6 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
-
+// every turtle in the simulation
 public abstract class Turtle {
     public final Simulator simulator;
     public Point point;
@@ -14,7 +14,7 @@ public abstract class Turtle {
 
     // decide where to move for this turtle
     public void move() {
-        // remove cop's or not-in-jail agent's coordinates
+        // remove occupying turtles' coordinates
         ArrayList<Point> availableList = new ArrayList<>();
         for (Point coord : simulator.withinDistance(point, simulator.vision)) {
             if (simulator.map.get(coord).isEmpty()) {
@@ -37,8 +37,7 @@ public abstract class Turtle {
         }
 
         // select one random place from the availableList
-        Point randomCoordinate = availableList.get(
-                Simulator.random.nextInt(availableList.size()));
+        Point randomCoordinate = availableList.get(Simulator.random.nextInt(availableList.size()));
         // update map
         simulator.map.get(point).remove(this);
         simulator.map.get(randomCoordinate).add(this);
@@ -49,7 +48,7 @@ public abstract class Turtle {
     public abstract void go();
 
     // see if it takes up the coordinate
-    public boolean isOccupying(){
+    public boolean isOccupying() {
         return injureTerm <= 0;
     }
 }

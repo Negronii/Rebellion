@@ -1,5 +1,5 @@
 import java.awt.*;
-
+// The agents in simulation
 public class Agent extends Turtle {
     // the unique id of the agent
     public final int id;
@@ -68,14 +68,9 @@ public class Agent extends Turtle {
 
     @Override
     public String toString() {
-        return "Agent{" +
-                "id=" + id +
-                ", riskAversion=" + riskAversion +
-                ", perceivedHardship=" + perceivedHardship +
-                ", isActive=" + isActive +
-                ", jailTerm=" + jailTerm +
-                ", point=" + point +
-                ", injureTerm=" + injureTerm +
-                '}';
+        return "Agent{" + "id=" + id + ", riskAversion=" + riskAversion + ", " +
+                "perceivedHardship=" + perceivedHardship + ", isActive=" +
+                isActive + ", jailTerm=" + jailTerm + ", point=" + point + ", " +
+                "injureTerm=" + injureTerm + '}';
     }
 }

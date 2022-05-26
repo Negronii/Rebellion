@@ -1,6 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
-
+// the cops in simulation
 public class Cop extends Turtle {
     // unique id of the cop turtle
     public final int id;
@@ -22,8 +22,7 @@ public class Cop extends Turtle {
         // no active agents, do nothing
         if (actives.isEmpty()) return;
         // find a random targetActive
-        Agent targetActive =
-                actives.get(Simulator.random.nextInt(actives.size()));
+        Agent targetActive = actives.get(Simulator.random.nextInt(actives.size()));
         // go to the active's place
         simulator.map.get(point).remove(this);
         point = targetActive.point;
@@ -46,33 +45,34 @@ public class Cop extends Turtle {
                     for (Turtle turtle : simulator.map.get(point)) {
                         if (turtle instanceof Cop && turtle.injureTerm <= 0)
                             nCops++;
-                        else if (turtle instanceof Agent && ((Agent)
-                                turtle).isActive) nActive++;
+                        else if (turtle instanceof Agent
+                                && ((Agent) turtle).isActive)
+                            nActive++;
                     }
                 }
-                if (nCops * simulator.equipmentCoefficient > nActive){
+                if (nCops * simulator.equipmentCoefficient > nActive) {
                     targetActive.injureTerm = Simulator.random.nextInt(
                             simulator.maxTreatmentTerm + 1);
                     targetActive.isActive = false;
-                }
-                else injureTerm = Simulator.random.nextInt(
-                        simulator.maxTreatmentTerm + 1);
+                } else
+                    injureTerm = Simulator.random.nextInt(
+                            simulator.maxTreatmentTerm + 1);
             }
         }
         // if no fight happened
         if (!fight) {
             // enforce it
             targetActive.isActive = false;
-            targetActive.jailTerm = Simulator.random.nextInt(simulator.maxJailTerm + 1);
+            targetActive.jailTerm = Simulator.random.nextInt(
+                    simulator.maxJailTerm + 1);
         }
     }
 
     @Override
     public void go() {
-        if (injureTerm <= 0){
+        if (injureTerm <= 0) {
             move();
             enforce();
-        }
-        else injureTerm--;
+        } else injureTerm--;
     }
 }

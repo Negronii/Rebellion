@@ -57,24 +57,23 @@ public class GUI {
         // red circles represents active agents
         // green circles represents quiet agents
         // black circles represents agents in jail
-        // blue circles represents cops
+        // blue circles represents healthy cops
+        // purple circles represents injured cops
+        // yellow circles represents injured agents
         // duplicate and smaller circles means they are at same place
         panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                for (Point coord : simulator.map.keySet()
-                ) {
+                for (Point coord : simulator.map.keySet()) {
                     if (simulator.map.get(coord).isEmpty()) continue;
                     int size = 20;
-                    for (Turtle turtle : simulator.map.get(coord)
-                    ) {
-                        // set color for shape
-                        if (turtle instanceof Cop){
+                    for (Turtle turtle : simulator.map.get(coord)) {
+                        // set color for circles
+                        if (turtle instanceof Cop) {
                             if (turtle.injureTerm <= 0) g.setColor(Color.blue);
                             else g.setColor(Color.magenta);
-                        }
-                        else if (turtle instanceof Agent) {
+                        } else if (turtle instanceof Agent) {
                             if (((Agent) turtle).isActive)
                                 g.setColor(Color.red);
                             else if (((Agent) turtle).jailTerm > 0)
@@ -83,10 +82,10 @@ public class GUI {
                                 g.setColor(Color.yellow);
                             else g.setColor(Color.green);
                         }
-                        // draw the shape
+                        // draw the shapes
                         g.fillOval(20 * coord.x + 20 - size,
                                 20 * coord.y + 20 - size, size, size);
-                        // draw the outline
+                        // draw the outlines
                         g.setColor(Color.black);
                         g.drawOval(20 * coord.x + 20 - size,
                                 20 * coord.y + 20 - size, size, size);
@@ -95,20 +94,18 @@ public class GUI {
                 }
             }
         };
-        panel.setBorder(BorderFactory.createEmptyBorder(400, 400,
-                400, 400));
+        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 400));
         // add function when clicking on a point, opens sub frame to show detail
         MouseListener mouseListener = new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 textArea.setText("");
                 if (simulator.map.containsKey(new Point(e.getX() / 20,
-                        e.getY() / 20)) &&
-                        !simulator.map.get(new Point(e.getX() / 20,
-                                e.getY() / 20)).isEmpty()) {
-                    for (Turtle turtle :
-                            simulator.map.get(new Point(e.getX() / 20,
-                                    e.getY() / 20))) {
+                        e.getY() / 20)) && !simulator.map.get(
+                                new Point(e.getX() / 20,
+                                        e.getY() / 20)).isEmpty()) {
+                    for (Turtle turtle : simulator.map.get(
+                            new Point(e.getX() / 20, e.getY() / 20))) {
                         textArea.setText(textArea.getText() + turtle.toString()
                                 + '\n');
                     }
@@ -161,8 +158,7 @@ public class GUI {
         };
         setupButton.addActionListener(setupListener);
 
-        nRunText = new JLabel("please enter number of runs below, " +
-                "press enter to update");
+        nRunText = new JLabel("please enter number of runs below, " + "press enter to update");
 
         // create user input for number of runs and set update button rule
         nRun = new JTextField("1000");
@@ -182,8 +178,7 @@ public class GUI {
         };
         nRunButton.addActionListener(runListener);
 
-        textFileName = new JLabel("please enter a file name to save as " +
-                ".csv");
+        textFileName = new JLabel("please enter a file name to save as " + ".csv");
 
         fileName = new JTextField("dataSample.csv");
         // create save file button and its logic
