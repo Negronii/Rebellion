@@ -14,7 +14,7 @@
 
 &nbsp; &nbsp; &nbsp; &nbsp; $ java Main GUI -e  (Run the extension model)
 
-It will open a GUI window to run the Rebellion model.
+&nbsp; &nbsp; &nbsp; &nbsp;  It will open a GUI window to run the Rebellion model.
 
 2. b.  We can choose to run all parameters set in Main class. For save-path, we have to put it in the runOneFeature method. It will allow the app to save output with pre-defined parameters automatically.
 
