@@ -8,11 +8,11 @@ import java.io.FileWriter;
 public class Main {
 
     // all experiment values, first is default and rest are candidates
-    public static double[] cop = {0.04, 0.01, 0.02, 0.06, 0.08, 0.1};
-    public static double[] agent = {0.7, 0.40, 0.50, 0.60, 0.80, 0.90};
+    public static double[] initial_cop_density = {0.04, 0.01, 0.02, 0.06, 0.08, 0.1};
+    public static double[] initial_agent_density = {0.7, 0.40, 0.50, 0.60, 0.80, 0.90};
     public static int[] vision = {7, 2, 4, 6, 8, 10};
-    public static double[] legit = {0.82, 0.2, 0.4, 0.6, 0.8, 1.0};
-    public static int[] jail = {30, 0, 10, 20, 40, 50};
+    public static double[] government_legitimacy = {0.82, 0.2, 0.4, 0.6, 0.8, 1.0};
+    public static int[] maxJailTerm = {30, 0, 10, 20, 40, 50};
 
 
     // extension experiment values
@@ -38,17 +38,17 @@ public class Main {
                 if (Objects.equals(args[1], "-o")) {
                     runOneFeature(simulator, x, y);
                     //for each feature, run nRun times with nStepRun steps
-                    for (int i = 1; i < cop.length; i++) {
-                        simulator.initial_cop_density = cop[i];
+                    for (int i = 1; i < initial_cop_density.length; i++) {
+                        simulator.initial_cop_density = initial_cop_density[i];
                         runOneFeature(simulator, x, y);
                     }
-                    simulator.initial_cop_density = cop[0];
+                    simulator.initial_cop_density = initial_cop_density[0];
 
-                    for (int i = 1; i < agent.length; i++) {
-                        simulator.initial_agent_density = agent[i];
+                    for (int i = 1; i < initial_agent_density.length; i++) {
+                        simulator.initial_agent_density = initial_agent_density[i];
                         runOneFeature(simulator, x, y);
                     }
-                    simulator.initial_agent_density = agent[0];
+                    simulator.initial_agent_density = initial_agent_density[0];
 
                     for (int i = 1; i < vision.length; i++) {
                         simulator.vision = vision[i];
@@ -56,17 +56,17 @@ public class Main {
                     }
                     simulator.vision = vision[0];
 
-                    for (int i = 1; i < legit.length; i++) {
-                        simulator.government_legitimacy = legit[i];
+                    for (int i = 1; i < government_legitimacy.length; i++) {
+                        simulator.government_legitimacy = government_legitimacy[i];
                         runOneFeature(simulator, x, y);
                     }
-                    simulator.government_legitimacy = legit[0];
+                    simulator.government_legitimacy = government_legitimacy[0];
 
-                    for (int i = 1; i < jail.length; i++) {
-                        simulator.maxJailTerm = jail[i];
+                    for (int i = 1; i < maxJailTerm.length; i++) {
+                        simulator.maxJailTerm = maxJailTerm[i];
                         runOneFeature(simulator, x, y);
                     }
-                    simulator.maxJailTerm = jail[0];
+                    simulator.maxJailTerm = maxJailTerm[0];
 
                     simulator.injure_extension = true;
                     runOneFeature(simulator, x, y);
