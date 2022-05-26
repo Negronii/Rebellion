@@ -16,7 +16,6 @@ public class Main {
     public static int sampleSize = 100;
     public static double[] extensionLegit = new double[sampleSize];
     public static double[] result = new double[sampleSize];
-    public static double buffer;
 
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
@@ -69,7 +68,7 @@ public class Main {
                 for (int i = 0; i < sampleSize; i++) {
                     simulator.government_legitimacy = extensionLegit[i];
                     runOneFeature(simulator, x, y);
-                    result[i] = buffer;
+                    result[i] = simulator.equipmentCoefficient;
                 }
                 try{
                     FileWriter fw = new FileWriter("dataSamples/extension/"
@@ -120,7 +119,6 @@ public class Main {
                 simulator.equipmentCoefficient = simulator.equipmentCoefficient + (lowerEquipment - simulator.equipmentCoefficient)/2;
             }
         }
-        buffer = simulator.equipmentCoefficient;
-        System.out.println(simulator.government_legitimacy + ", "  + buffer);
+        System.out.println(simulator.government_legitimacy + ", "  + simulator.equipmentCoefficient);
     }
 }
