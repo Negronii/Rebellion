@@ -13,7 +13,7 @@ public class Main {
     public static double[] legit = {0.82, 0.2, 0.4, 0.6, 0.8, 1.0};
     public static int[] jail = {30, 0, 10, 20, 40, 50};
     public static double[] corruption = {0, 0.2, 0.4, 0.6, 0.8};
-    public static int sampleSize = 20;
+    public static int sampleSize = 100;
     public static double[] extensionLegit = new double[sampleSize];
     public static double[] result = new double[sampleSize];
     public static double buffer;
@@ -63,8 +63,8 @@ public class Main {
                 // simulator.maxJailTerm = jail[0];
 
                 simulator.injure_extension = true;
-                for (int i = 620; i < 640; i++) {
-                    extensionLegit[i-620] = (double)i/1000;
+                for (int i = 0; i < sampleSize; i++) {
+                    extensionLegit[i] = (double)i/100;
                 }
                 for (int i = 0; i < sampleSize; i++) {
                     simulator.government_legitimacy = extensionLegit[i];
@@ -73,13 +73,13 @@ public class Main {
                 }
                 try{
                     FileWriter fw = new FileWriter("dataSamples/extension/"
-                            + "result3" + ".csv");
+                            + "result" + ".csv");
                     fw.append("legit");
                     fw.append(',');
                     fw.append("equipment");
                     fw.append('\n');
                     for (int i = 0; i < sampleSize; i++) {
-                        fw.append(""+(i/100 + 0.62));
+                        fw.append(""+(i/100));
                         fw.append(',');
                         fw.append(""+result[i]);
                         fw.append('\n');
@@ -97,12 +97,8 @@ public class Main {
     public static void runOneFeature(Simulator simulator, int x, int y){
         int total = x;
         int success;
-        // double equipment = simulator.equipmentCoefficient;
         double upperEquipment = 100;
         double lowerEquipment = 0;
-        // System.out.println("equipment: " + equipment);
-        // System.out.println("lower: " + lowerEquipment);
-        // System.out.println("upper: " + upperEquipment);
         while (upperEquipment - lowerEquipment > 0.001) {
             total = x;
             success = 0;
@@ -115,15 +111,6 @@ public class Main {
                         break;
                     }
                 }
-                // simulator.writeToCsv("dataSamples/java/"
-                //         + simulator.initial_cop_density + "_"
-                //         + simulator.initial_agent_density + "_"
-                //         + simulator.vision + "_"
-                //         + simulator.government_legitimacy + "_"
-                //         + simulator.maxJailTerm + "_" + i + ".csv");
-                // simulator.writeToCsv("dataSamples/extension/"
-                //         + Params.government_legitimacy + "_"
-                //         + simulator.equipmentCoefficient + ".csv");
             }
             if (success/total > 0.1) {
                 lowerEquipment = simulator.equipmentCoefficient;
@@ -132,14 +119,7 @@ public class Main {
                 upperEquipment = simulator.equipmentCoefficient;
                 simulator.equipmentCoefficient = simulator.equipmentCoefficient + (lowerEquipment - simulator.equipmentCoefficient)/2;
             }
-            // System.out.println("equipment: " + equipment);
-            // System.out.println("lower: " + lowerEquipment);
-            // System.out.println("upper: " + upperEquipment);
         }
-        // System.out.println("equipment: " + equipment);
-        // System.out.println("lower: " + lowerEquipment);
-        // System.out.println("upper: " + upperEquipment);
-        // System.out.println("Finished");
         buffer = simulator.equipmentCoefficient;
         System.out.println(simulator.government_legitimacy + ", "  + buffer);
     }
