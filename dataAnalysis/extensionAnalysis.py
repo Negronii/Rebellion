@@ -1,7 +1,7 @@
 import sys, csv, math
 import matplotlib.pyplot as plt
 
-with open('dataSamples/extension/result.csv', 'r') as openfile:
+with open('dataSamples/extension/mixedResult.csv', 'r') as openfile:
     reader = csv.reader(openfile)
     data = list(reader)
 data = data[1:]
