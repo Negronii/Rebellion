@@ -1,7 +1,7 @@
 // this class is to run simulator for multiple times and store data in .csv file
 public class MultiRun {
     // number of runs
-    public static final int nRun = 50;
+    public static final int nRun = 1;
     // how many steps we want to go in each run
     public static final int nStepsPerRun = 1000;
 
@@ -9,9 +9,10 @@ public class MultiRun {
     public static double[] cop = {0.04, 0.01, 0.02, 0.06, 0.08, 0.1};
     public static double[] agent = {0.7, 0.40, 0.50, 0.60, 0.80, 0.90};
     public static int[] vision = {7, 2, 4, 6, 8, 10};
-    public static double[] legit = {0.82, 0.2, 0.4, 0.6, 0.8, 1.0};
+    public static double[] legit = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9};
     public static int[] jail = {30, 0, 10, 20, 40, 50};
     public static double[] corruption = {0, 0.2, 0.4, 0.6, 0.8};
+    
 
 
     public static void main(String[] args) {
@@ -48,34 +49,28 @@ public class MultiRun {
 //        }
 //        Params.maxJailTerm = jail[0];
 
-        for (double v : corruption) {
-            Params.corruption = v;
-            runOneFeature();
-        }
+        // runOneFeature();
     }
 
     // run nRun times with nStepRun steps, output file name as parameters
-    public static void runOneFeature(){
-        for (int i = 0; i < nRun; i++) {
-            Simulator.setup();
-            for (int j = 0; j < nStepsPerRun; j++) {
-                Simulator.go();
-            }
-//            Simulator.writeToCsv("dataSamples/java/"
-//                    + Params.initial_cop_density + "_"
-//                    + Params.initial_agent_density + "_"
-//                    + Params.vision + "_"
-//                    + Params.government_legitimacy + "_"
-//                    + Params.maxJailTerm + "_" + i + ".csv");
-            Simulator.writeToCsv("dataSamples/extension/"
-                    + Params.initial_cop_density + "_"
-                    + Params.initial_agent_density + "_"
-                    + Params.vision + "_"
-                    + Params.government_legitimacy + "_"
-                    + Params.maxJailTerm + "_"
-                    + Params.movement + "_"
-                    + Params.corruption + "_"
-                    + i + ".csv");
-        }
-    }
+//     public static void runOneFeature(){
+//         for (int i = 0; i < nRun; i++) {
+//             Simulator.setup();
+//             for (int j = 0; j < nStepsPerRun; j++) {
+//                 Simulator.go();
+//                 if (Simulator.flag == true) {
+//                     break;
+//                 }
+//             }
+// //            Simulator.writeToCsv("dataSamples/java/"
+// //                    + Params.initial_cop_density + "_"
+// //                    + Params.initial_agent_density + "_"
+// //                    + Params.vision + "_"
+// //                    + Params.government_legitimacy + "_"
+// //                    + Params.maxJailTerm + "_" + i + ".csv");
+//             Simulator.writeToCsv("dataSamples/extension/"
+//                     + Params.government_legitimacy + "_"
+//                     + i + ".csv");
+//         }
+//     }
 }

@@ -1,7 +1,7 @@
 public class Params {
     public static double initial_cop_density = 0.04;
     public static double initial_agent_density = 0.70;
-    public static double government_legitimacy = 0.6;
+    public static double government_legitimacy = 0.1;
     public static double vision = 7;
     public static double k = 2.3;
     public static double threshold = 0.10;

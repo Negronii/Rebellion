@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class GUI {
+    Simulator simulator;
+
     // the frame shown
     JFrame frame;
 
@@ -44,47 +46,46 @@ public class GUI {
     // the sub frame for more information
     JFrame subFrame;
 
-    public GUI() {
+    public GUI(Simulator simulator) {
+        this.simulator = simulator;
         frame = new JFrame();
         subFrame = new JFrame();
-        frame.setSize(10 * Params.width, 10 * Params.length);
+        frame.setSize(10 * simulator.width, 10 * simulator.length);
         subFrame.setSize(400, 400);
 
         // this is the main panel that draws circles
         // red circles represents active agents
         // green circles represents quiet agents
         // black circles represents agents in jail
-        // blue circles represents cops
+        // blue circles represents healthy cops
+        // purple circles represents injured cops
+        // yellow circles represents injured agents
         // duplicate and smaller circles means they are at same place
         panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                for (Coord coord : Simulator.map.keySet()
-                ) {
-                    if (Simulator.map.get(coord).isEmpty()) continue;
+                for (Point coord : simulator.map.keySet()) {
+                    if (simulator.map.get(coord).isEmpty()) continue;
                     int size = 20;
-                    for (Turtle turtle : Simulator.map.get(coord)
-                    ) {
-                        // set color for shape
-                        if (turtle instanceof Cop){
-                            if(turtle.injuryTerm > 0)
-                                g.setColor(Color.magenta);
-                            else g.setColor(Color.blue);
-                        }
-                        else if (turtle instanceof Agent) {
+                    for (Turtle turtle : simulator.map.get(coord)) {
+                        // set color for circles
+                        if (turtle instanceof Cop) {
+                            if (turtle.injureTerm <= 0) g.setColor(Color.blue);
+                            else g.setColor(Color.magenta);
+                        } else if (turtle instanceof Agent) {
                             if (((Agent) turtle).isActive)
                                 g.setColor(Color.red);
-                            else if (turtle.injuryTerm > 0)
-                                g.setColor(Color.orange);
                             else if (((Agent) turtle).jailTerm > 0)
                                 g.setColor(Color.gray);
+                            else if (turtle.injureTerm > 0)
+                                g.setColor(Color.yellow);
                             else g.setColor(Color.green);
                         }
-                        // draw the shape
+                        // draw the shapes
                         g.fillOval(20 * coord.x + 20 - size,
                                 20 * coord.y + 20 - size, size, size);
-                        // draw the outline
+                        // draw the outlines
                         g.setColor(Color.black);
                         g.drawOval(20 * coord.x + 20 - size,
                                 20 * coord.y + 20 - size, size, size);
@@ -93,20 +94,18 @@ public class GUI {
                 }
             }
         };
-        panel.setBorder(BorderFactory.createEmptyBorder(400, 400,
-                400, 400));
+        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 400));
         // add function when clicking on a point, opens sub frame to show detail
         MouseListener mouseListener = new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 textArea.setText("");
-                if (Simulator.map.containsKey(new Coord(e.getX() / 20,
-                        e.getY() / 20)) &&
-                        !Simulator.map.get(new Coord(e.getX() / 20,
-                                e.getY() / 20)).isEmpty()) {
-                    for (Turtle turtle :
-                            Simulator.map.get(new Coord(e.getX() / 20,
-                                    e.getY() / 20))) {
+                if (simulator.map.containsKey(new Point(e.getX() / 20,
+                        e.getY() / 20)) && !simulator.map.get(
+                                new Point(e.getX() / 20,
+                                        e.getY() / 20)).isEmpty()) {
+                    for (Turtle turtle : simulator.map.get(
+                            new Point(e.getX() / 20, e.getY() / 20))) {
                         textArea.setText(textArea.getText() + turtle.toString()
                                 + '\n');
                     }
@@ -139,8 +138,8 @@ public class GUI {
         // create go button and logic
         goButton = new JButton("go");
         ActionListener goListener = e -> {
-            if (Simulator.map.containsKey(new Coord(0, 0))) {
-                Simulator.go();
+            if (simulator.map.containsKey(new Point(0, 0))) {
+                simulator.go();
                 panel.removeAll();
                 panel.updateUI();
             } else {
@@ -153,14 +152,13 @@ public class GUI {
         // create set-up button and logic
         setupButton = new JButton("setup");
         ActionListener setupListener = e -> {
-            Simulator.setup();
+            simulator.setup();
             panel.removeAll();
             panel.updateUI();
         };
         setupButton.addActionListener(setupListener);
 
-        nRunText = new JLabel("please enter number of runs below, " +
-                "press enter to update");
+        nRunText = new JLabel("please enter number of runs below, " + "press enter to update");
 
         // create user input for number of runs and set update button rule
         nRun = new JTextField("1000");
@@ -173,21 +171,20 @@ public class GUI {
         nRunButton = new JButton("run " + nRun.getText() + " times");
         ActionListener runListener = e -> {
             for (int i = 0; i < Integer.parseInt(nRun.getText()); i++) {
-                Simulator.go();
+                simulator.go();
             }
             panel.removeAll();
             panel.updateUI();
         };
         nRunButton.addActionListener(runListener);
 
-        textFileName = new JLabel("please enter a file name to save as " +
-                ".csv");
+        textFileName = new JLabel("please enter a file name to save as " + ".csv");
 
         fileName = new JTextField("dataSample.csv");
         // create save file button and its logic
         saveFile = new JButton("save file");
         ActionListener saveListener = e -> {
-            Simulator.writeToCsv(fileName.getText());
+            simulator.writeToCsv(fileName.getText());
         };
         saveFile.addActionListener(saveListener);
 
