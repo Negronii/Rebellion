@@ -11,7 +11,7 @@ public class Simulator {
     // basic model parameters
     public double initial_cop_density = 0.04;
     public double initial_agent_density = 0.70;
-    public double government_legitimacy = 0.90;
+    public double government_legitimacy = 0.1;
     public double vision = 7;
     public double k = 2.3;
     public double threshold = 0.10;
@@ -126,7 +126,7 @@ public class Simulator {
         // check if it is a successful rebellion term
         // i.e. injured cop more than half of total cops
         if (nInjuredCops > nCop / 2) successfulTerm++;
-        if (nInjuredCops < nCop / 2) successfulTerm = 0;
+        else successfulTerm = 0;
         // add to list respectively
         nQuietList.add(nQuiet);
         nActiveList.add(nActive);

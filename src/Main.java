@@ -67,6 +67,7 @@ public class Main {
                     simulator.government_legitimacy = extensionLegit[i];
                     runOneFeature(simulator, x, y);
                 }
+                // runOneFeature(simulator, x, y);
             }
         }
     }
@@ -74,9 +75,9 @@ public class Main {
     public static void runOneFeature(Simulator simulator, int x, int y){
         int total = x;
         int success;
-        double equipment = simulator.equipmentCoefficient;
-        double upperEquipment = 2 * equipment;
-        double lowerEquipment = equipment / 2;
+        // double equipment = simulator.equipmentCoefficient;
+        double upperEquipment = 100;
+        double lowerEquipment = 0;
         // System.out.println("equipment: " + equipment);
         // System.out.println("lower: " + lowerEquipment);
         // System.out.println("upper: " + upperEquipment);
@@ -101,21 +102,21 @@ public class Main {
                 //         + simulator.maxJailTerm + "_" + i + ".csv");
                 // simulator.writeToCsv("dataSamples/extension/"
                 //         + Params.government_legitimacy + "_"
-                //         + i + ".csv");
+                //         + simulator.equipmentCoefficient + ".csv");
             }
             System.out.println("exit for loop");
-            if (success/total > 0.05) {
-                lowerEquipment = equipment;
-                equipment = equipment + (upperEquipment - equipment)/2;
+            if (success/total > 0.1) {
+                lowerEquipment = simulator.equipmentCoefficient;
+                simulator.equipmentCoefficient = simulator.equipmentCoefficient + (upperEquipment - simulator.equipmentCoefficient)/2;
             } else {
-                upperEquipment = equipment;
-                equipment = equipment + (lowerEquipment - equipment)/2;
+                upperEquipment = simulator.equipmentCoefficient;
+                simulator.equipmentCoefficient = simulator.equipmentCoefficient + (lowerEquipment - simulator.equipmentCoefficient)/2;
             }
             // System.out.println("equipment: " + equipment);
             // System.out.println("lower: " + lowerEquipment);
             // System.out.println("upper: " + upperEquipment);
             System.out.println("Running legitmacy of "  + simulator.government_legitimacy);
-            System.out.println("Current equipment:" + equipment);
+            System.out.println("Current equipment:" + simulator.equipmentCoefficient);
         }
         // System.out.println("equipment: " + equipment);
         // System.out.println("lower: " + lowerEquipment);
