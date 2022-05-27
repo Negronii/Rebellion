@@ -6,7 +6,7 @@
 
 &nbsp; &nbsp; &nbsp; &nbsp; $ cd src
 
-&nbsp; &nbsp; &nbsp; &nbsp; $ javac *.java
+&nbsp; &nbsp; &nbsp; &nbsp; $ javac \*.java
 
 2. a. We can choose to run the original model as replicating the NetLogo model or run the extension model.
 
@@ -20,11 +20,11 @@
 
 &nbsp; &nbsp; &nbsp; &nbsp; $ java Main Multi -o x y    (It was used to generate data that we used to compare two models) 
 
-&nbsp; &nbsp; &nbsp; &nbsp; Its default save path is "dataSample/java/", and it will generate new output files and overwrite our exising data files.
+&nbsp; &nbsp; &nbsp; &nbsp; *Its default save path is "dataSample/java/", and it will generate new output files and __overwrite__ our exising data files.*
 
 &nbsp; &nbsp; &nbsp; &nbsp; $ java Main Multi -e x y   (It was used to generate data that we used to analyze our research question) 
 
-&nbsp; &nbsp; &nbsp; &nbsp; Its default save path is "dataSample/extension/", it will generate new output files and overwrite our exising data files.
+&nbsp; &nbsp; &nbsp; &nbsp; *Its default save path is "dataSample/extension/", it will generate new output files and __overwrite__ our exising data files.*
 
 
 &nbsp; &nbsp; &nbsp; &nbsp; ‘x’ means how many times to run.
