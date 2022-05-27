@@ -1,6 +1,6 @@
-import java.util.Objects;
-import java.io.IOException;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Objects;
 
 // main class to drive simulations
 // argument GUI to be GUI mode
@@ -8,17 +8,19 @@ import java.io.FileWriter;
 public class Main {
 
     // all experiment values, first is default and rest are candidates
-    public static double[] initial_cop_density = {0.04, 0.01, 0.02, 0.06, 0.08, 0.1};
-    public static double[] initial_agent_density = {0.7, 0.40, 0.50, 0.60, 0.80, 0.90};
-    public static int[] vision = {7, 2, 4, 6, 8, 10};
-    public static double[] government_legitimacy = {0.82, 0.2, 0.4, 0.6, 0.8, 1.0};
-    public static int[] maxJailTerm = {30, 0, 10, 20, 40, 50};
-
+    private static final double[] initial_cop_density = {0.04, 0.01, 0.02, 0.06,
+            0.08, 0.1};
+    private static final double[] initial_agent_density = {0.7, 0.40, 0.50,
+            0.60, 0.80, 0.90};
+    private static final int[] vision = {7, 2, 4, 6, 8, 10};
+    private static final double[] government_legitimacy = {0.82, 0.2, 0.4, 0.6,
+            0.8, 1.0};
+    private static final int[] maxJailTerm = {30, 0, 10, 20, 40, 50};
 
     // extension experiment values
-    public static int sampleSize = 100;
-    public static double[] extensionLegit = new double[sampleSize];
-    public static double[] result = new double[sampleSize];
+    private static final int sampleSize = 100;
+    private static final double[] extensionLegit = new double[sampleSize];
+    private static final double[] result = new double[sampleSize];
 
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
@@ -45,7 +47,8 @@ public class Main {
                     simulator.initial_cop_density = initial_cop_density[0];
 
                     for (int i = 1; i < initial_agent_density.length; i++) {
-                        simulator.initial_agent_density = initial_agent_density[i];
+                        simulator.initial_agent_density =
+                                initial_agent_density[i];
                         runOneFeature(simulator, x, y);
                     }
                     simulator.initial_agent_density = initial_agent_density[0];
@@ -57,7 +60,8 @@ public class Main {
                     simulator.vision = vision[0];
 
                     for (int i = 1; i < government_legitimacy.length; i++) {
-                        simulator.government_legitimacy = government_legitimacy[i];
+                        simulator.government_legitimacy =
+                                government_legitimacy[i];
                         runOneFeature(simulator, x, y);
                     }
                     simulator.government_legitimacy = government_legitimacy[0];
@@ -81,16 +85,14 @@ public class Main {
                         result[i] = simulator.equipmentCoefficient;
                     }
                     try {
-                        FileWriter fw = new FileWriter("dataSamples/extension/"
-                                + "result" + ".csv");
-                        fw.append("legit");
-                        fw.append(',');
-                        fw.append("equipment");
+                        FileWriter fw = new FileWriter("dataSamples/" +
+                                "extension/result.csv");
+                        fw.append("legit,equipment");
                         fw.append('\n');
                         for (int i = 0; i < sampleSize; i++) {
-                            fw.append("" + (i / 100));
+                            fw.append("").append(String.valueOf(i / 100.0));
                             fw.append(',');
-                            fw.append("" + result[i]);
+                            fw.append("").append(String.valueOf(result[i]));
                             fw.append('\n');
                         }
                         fw.flush();
@@ -103,22 +105,21 @@ public class Main {
         }
     }
 
-    public static void runOneFeature(Simulator simulator, int x, int y) {
+    private static void runOneFeature(Simulator simulator, int x, int y) {
         for (int i = 0; i < x; i++) {
             simulator.setup();
             for (int j = 0; j < y; j++) {
                 simulator.go();
             }
-            simulator.writeToCsv("dataSamples/java/"
-                    + simulator.initial_cop_density + "_"
-                    + simulator.initial_agent_density + "_"
-                    + simulator.vision + "_"
-                    + simulator.government_legitimacy + "_"
-                    + simulator.maxJailTerm + "_" + i + ".csv");
+            simulator.writeToCsv("dataSamples/java/" +
+                    simulator.initial_cop_density + "_" +
+                    simulator.initial_agent_density + "_" +
+                    simulator.vision + "_" + simulator.government_legitimacy +
+                    "_" + simulator.maxJailTerm + "_" + i + ".csv");
         }
     }
 
-    public static void runMultiExtension(Simulator simulator, int x, int y) {
+    private static void runMultiExtension(Simulator simulator, int x, int y) {
         int total;
         int success;
         double upperEquipment = 100;
@@ -136,7 +137,7 @@ public class Main {
                     }
                 }
             }
-            if (success / total > 0.1) {
+            if (((double) success / total) > 0.1) {
                 lowerEquipment = simulator.equipmentCoefficient;
                 simulator.equipmentCoefficient = simulator.equipmentCoefficient
                         + (upperEquipment - simulator.equipmentCoefficient) / 2;
@@ -146,7 +147,7 @@ public class Main {
                         + (lowerEquipment - simulator.equipmentCoefficient) / 2;
             }
         }
-        System.out.println(simulator.government_legitimacy + ", "
-                + simulator.equipmentCoefficient);
+        System.out.println(simulator.government_legitimacy + ", " +
+                simulator.equipmentCoefficient);
     }
 }

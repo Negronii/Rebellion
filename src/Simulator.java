@@ -28,36 +28,36 @@ public class Simulator {
     public int maxTreatmentTerm = 10;
     public double equipmentCoefficient = 5.0;
 
-    // all turtles including agents and cops
-    public ArrayList<Turtle> turtles = new ArrayList<>();
+    // number of cops in the simulation
+    private int nCop = (int) Math.round(initial_cop_density * width * length);
+    // the number of agents in the simulation
+    private int nAgent = (int) Math.round(initial_agent_density * width *
+            length);
 
     // the key is coordinate and the value is all agent and cops on it
     public HashMap<Point, ArrayList<Turtle>> map = new HashMap<>();
 
+    // all turtles including agents and cops
+    private final ArrayList<Turtle> turtles = new ArrayList<>();
+
     // number of quiet at end of each turn
-    public ArrayList<Integer> nQuietList = new ArrayList<>();
+    private final ArrayList<Integer> nQuietList = new ArrayList<>();
 
     // number of active at end of each turn
-    public ArrayList<Integer> nActiveList = new ArrayList<>();
+    private final ArrayList<Integer> nActiveList = new ArrayList<>();
 
     // number of jailed at end of each turn
-    public ArrayList<Integer> nJailList = new ArrayList<>();
+    private final ArrayList<Integer> nJailList = new ArrayList<>();
 
     // number of injured cops at end of each turn
-    public ArrayList<Integer> nInjuredCopList = new ArrayList<>();
+    private final ArrayList<Integer> nInjuredCopList = new ArrayList<>();
 
     // number of injured agents at end of each turn
-    public ArrayList<Integer> nInjuredAgentList = new ArrayList<>();
-
-    // number of cops in the simulation
-    private int nCop = (int) Math.round(initial_cop_density * width * length);
-
-    // the number of agents in the simulation
-    private int nAgent = (int) Math.round(initial_agent_density * width * length);
+    private final ArrayList<Integer> nInjuredAgentList = new ArrayList<>();
 
     public int successfulTerm = 0;
 
-    ArrayList<Integer> terms = new ArrayList<>();
+    private final ArrayList<Integer> terms = new ArrayList<>();
 
     public Simulator(Boolean guiOn) throws Exception {
         // avoid total turtle number more than total grid number
@@ -111,8 +111,8 @@ public class Simulator {
 
     // count the number of each field at the moment
     public void count() {
-        int nQuiet = 0, nActive = 0, nJail = 0, nInjuredCops = 0,
-                nInjuredAgents = 0;
+        int nQuiet = 0, nActive = 0, nJail = 0, nInjuredCops = 0, nInjuredAgents
+                = 0;
         // count the number of each field at the moment
         for (Turtle turtle : turtles) {
             if (turtle instanceof Agent) {
@@ -140,20 +140,9 @@ public class Simulator {
     public void writeToCsv(String fileName) {
         try {
             FileWriter fw = new FileWriter(fileName);
-            fw.append("time");
-            fw.append(',');
-            fw.append("quite");
-            fw.append(',');
-            fw.append("jail");
-            fw.append(',');
-            fw.append("active");
+            fw.append("time,quiet,jail,active");
             if (injure_extension) {
-                fw.append(',');
-                fw.append("injuredCop");
-                fw.append(',');
-                fw.append("injuredAgent");
-                fw.append(',');
-                fw.append("RebellionSuccessfulTurns");
+                fw.append(",injuredCop,injuredAgent,RebellionSuccessfulTurns");
             }
             fw.append('\n');
             for (int i = 0; i < nActiveList.size(); i++) {
@@ -202,7 +191,8 @@ public class Simulator {
         int rDistance = (int) distance;
         for (int i = 0; i < 2 * rDistance + 1; i++) {
             for (int j = 0; j < 2 * rDistance + 1; j++) {
-                if (new Point(rDistance, rDistance).distance(i, j) - 0.0000001 < distance) {
+                if (new Point(rDistance, rDistance).distance(i, j) - 0.0000001 <
+                        distance) {
                     int x = (int) (i - distance + point.x + width) % width;
                     int y = (int) (j - distance + point.y + length) % length;
                     points.add(new Point(x, y));

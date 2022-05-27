@@ -5,50 +5,28 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class GUI {
-    Simulator simulator;
-
-    // the frame shown
-    JFrame frame;
-
-    // the go button
-    JButton goButton;
-
-    // the set-up button
-    JButton setupButton;
-
-    // the text: "please enter number of runs below, press enter to update"
-    JLabel nRunText;
 
     // user input label indicates go how many ticks
-    JTextField nRun;
+    private final JTextField nRun;
 
     // the run indicated number button
-    JButton nRunButton;
-
-    // the text "please enter a file name to save as .csv"
-    JLabel textFileName;
+    private JButton nRunButton;
 
     // input label for users to input file name
-    JTextField fileName;
-
-    // the button to save file
-    JButton saveFile;
+    private final JTextField fileName;
 
     //
-    JTextArea textArea;
+    private final JTextArea textArea;
 
     // the main panel
-    JPanel panel;
-
-    // the sidebar panel
-    JPanel tools;
+    private final JPanel panel;
 
     // the sub frame for more information
-    JFrame subFrame;
+    private final JFrame subFrame;
 
     public GUI(Simulator simulator) {
-        this.simulator = simulator;
-        frame = new JFrame();
+        // the frame shown
+        JFrame frame = new JFrame();
         subFrame = new JFrame();
         frame.setSize(10 * simulator.width, 10 * simulator.length);
         subFrame.setSize(400, 400);
@@ -83,29 +61,30 @@ public class GUI {
                             else g.setColor(Color.green);
                         }
                         // draw the shapes
-                        g.fillOval(20 * coord.x + 20 - size,
-                                20 * coord.y + 20 - size, size, size);
+                        g.fillOval(20 * coord.x + 20 - size, 20 * coord.y
+                                + 20 - size, size, size);
                         // draw the outlines
                         g.setColor(Color.black);
-                        g.drawOval(20 * coord.x + 20 - size,
-                                20 * coord.y + 20 - size, size, size);
+                        g.drawOval(20 * coord.x + 20 - size, 20 * coord.y
+                                + 20 - size, size, size);
                         size -= 3;
                     }
                 }
             }
         };
-        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 400));
+        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400,
+                400));
         // add function when clicking on a point, opens sub frame to show detail
         MouseListener mouseListener = new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 textArea.setText("");
                 if (simulator.map.containsKey(new Point(e.getX() / 20,
-                        e.getY() / 20)) && !simulator.map.get(
-                                new Point(e.getX() / 20,
-                                        e.getY() / 20)).isEmpty()) {
-                    for (Turtle turtle : simulator.map.get(
-                            new Point(e.getX() / 20, e.getY() / 20))) {
+                        e.getY() / 20)) && !simulator.map.get(new Point(
+                                e.getX() / 20, e.getY() / 20)).isEmpty())
+                {
+                    for (Turtle turtle : simulator.map.get(new Point(e.getX()
+                            / 20, e.getY() / 20))) {
                         textArea.setText(textArea.getText() + turtle.toString()
                                 + '\n');
                     }
@@ -136,7 +115,8 @@ public class GUI {
         panel.addMouseListener(mouseListener);
 
         // create go button and logic
-        goButton = new JButton("go");
+        // the go button
+        JButton goButton = new JButton("go");
         ActionListener goListener = e -> {
             if (simulator.map.containsKey(new Point(0, 0))) {
                 simulator.go();
@@ -150,7 +130,8 @@ public class GUI {
         goButton.addActionListener(goListener);
 
         // create set-up button and logic
-        setupButton = new JButton("setup");
+        // the set-up button
+        JButton setupButton = new JButton("setup");
         ActionListener setupListener = e -> {
             simulator.setup();
             panel.removeAll();
@@ -158,7 +139,9 @@ public class GUI {
         };
         setupButton.addActionListener(setupListener);
 
-        nRunText = new JLabel("please enter number of runs below, " + "press enter to update");
+        // the text: "please enter number of runs below, press enter to update"
+        JLabel nRunText = new JLabel("please enter number of runs below, "
+                + "press enter to update");
 
         // create user input for number of runs and set update button rule
         nRun = new JTextField("1000");
@@ -178,11 +161,14 @@ public class GUI {
         };
         nRunButton.addActionListener(runListener);
 
-        textFileName = new JLabel("please enter a file name to save as " + ".csv");
+        // the text "please enter a file name to save as .csv"
+        JLabel textFileName = new JLabel("please enter a file name to " +
+                "save as " + ".csv");
 
         fileName = new JTextField("dataSample.csv");
         // create save file button and its logic
-        saveFile = new JButton("save file");
+        // the button to save file
+        JButton saveFile = new JButton("save file");
         ActionListener saveListener = e -> {
             simulator.writeToCsv(fileName.getText());
         };
@@ -195,7 +181,8 @@ public class GUI {
         textArea.setEditable(false);
 
         // add everything into a sidebar on frame window
-        tools = new JPanel();
+        // the sidebar panel
+        JPanel tools = new JPanel();
         tools.setLayout(new GridLayout(20, 1));
         tools.add(setupButton);
         tools.add(goButton);
