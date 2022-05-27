@@ -59,7 +59,7 @@ Double click on the circle of the graph will give information about all turtles 
 
 
 ## Directory Structure
-
+'''
 .
 ├── README.md
 
@@ -94,3 +94,4 @@ Double click on the circle of the graph will give information about all turtles 
     ├── Simulator.java
 
     └── Turtle.java
+'''
