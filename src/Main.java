@@ -35,8 +35,8 @@ public class Main {
                 } else System.out.println("Wrong parameters");
             } else if (Objects.equals(args[0], "Multi")) {
                 Simulator simulator = new Simulator(false);
-                int x = Integer.parseInt(args[0]);
-                int y = Integer.parseInt(args[1]);
+                int x = Integer.parseInt(args[2]);
+                int y = Integer.parseInt(args[3]);
                 if (Objects.equals(args[1], "-o")) {
                     runOneFeature(simulator, x, y);
                     //for each feature, run nRun times with nStepRun steps
@@ -85,7 +85,7 @@ public class Main {
                         result[i] = simulator.equipmentCoefficient;
                     }
                     try {
-                        FileWriter fw = new FileWriter("dataSamples/" +
+                        FileWriter fw = new FileWriter("../dataSamples/" +
                                 "extension/result.csv");
                         fw.append("legit,equipment");
                         fw.append('\n');
@@ -111,7 +111,7 @@ public class Main {
             for (int j = 0; j < y; j++) {
                 simulator.go();
             }
-            simulator.writeToCsv("dataSamples/java/" +
+            simulator.writeToCsv("../dataSamples/java/" +
                     simulator.initial_cop_density + "_" +
                     simulator.initial_agent_density + "_" +
                     simulator.vision + "_" + simulator.government_legitimacy +
