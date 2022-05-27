@@ -1,1 +1,0 @@
-python3 dataAnalysis/analyse.py -i MJT
