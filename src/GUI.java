@@ -5,31 +5,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class GUI {
-
-    // user input label indicates go how many ticks
-    private final JTextField nRun;
-
-    // the run indicated number button
-    private JButton nRunButton;
-
-    // input label for users to input file name
-    private final JTextField fileName;
-
-    //
-    private final JTextArea textArea;
-
-    // the main panel
-    private final JPanel panel;
-
-    // the sub frame for more information
-    private final JFrame subFrame;
-
     public GUI(Simulator simulator) {
         // the frame shown
         JFrame frame = new JFrame();
-        subFrame = new JFrame();
+        JFrame subFrame = new JFrame();
         frame.setSize(10 * simulator.width, 10 * simulator.length);
         subFrame.setSize(400, 400);
+
+        // create sub-frame information bar
+        JTextArea textArea = new JTextArea(10, 20);
+        textArea.setWrapStyleWord(true);
+        textArea.setLineWrap(true);
+        textArea.setEditable(false);
 
         // this is the main panel that draws circles
         // red circles represents active agents
@@ -39,7 +26,7 @@ public class GUI {
         // purple circles represents injured cops
         // yellow circles represents injured agents
         // duplicate and smaller circles means they are at same place
-        panel = new JPanel() {
+        JPanel panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -144,13 +131,14 @@ public class GUI {
                 + "press enter to update");
 
         // create user input for number of runs and set update button rule
-        nRun = new JTextField("1000");
+        JTextField nRun = new JTextField("1000");
+        // create run n times button and logic
+        JButton nRunButton = new JButton("run " + nRun.getText() + " times");
+
         ActionListener runTextListener = e -> nRunButton.setText("run " +
                 nRun.getText() + " times");
         nRun.addActionListener(runTextListener);
 
-        // create run n times button and logic
-        nRunButton = new JButton("run " + nRun.getText() + " times");
         ActionListener runListener = e -> {
             for (int i = 0; i < Integer.parseInt(nRun.getText()); i++) {
                 simulator.go();
@@ -164,19 +152,13 @@ public class GUI {
         JLabel textFileName = new JLabel("please enter a file name to " +
                 "save as " + ".csv");
 
-        fileName = new JTextField("dataSample.csv");
+        JTextField fileName = new JTextField("dataSample.csv");
         // create save file button and its logic
         // the button to save file
         JButton saveFile = new JButton("save file");
         ActionListener saveListener = e ->
                 simulator.writeToCsv(fileName.getText());
         saveFile.addActionListener(saveListener);
-
-        // create sub-frame information bar
-        textArea = new JTextArea(10, 20);
-        textArea.setWrapStyleWord(true);
-        textArea.setLineWrap(true);
-        textArea.setEditable(false);
 
         // add everything into a sidebar on frame window
         // the sidebar panel
