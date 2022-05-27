@@ -16,7 +16,7 @@
 
 &nbsp; &nbsp; &nbsp; &nbsp;  It will open a GUI window to run the Rebellion model.
 
-2. b.  We can choose to run all parameters set in Main class. For save-path, we have to put it in the runOneFeature method. It will allow the app to save output with pre-defined parameters automatically.
+2. b.  We can choose to run all parameters set in Main class. 
 
 &nbsp; &nbsp; &nbsp; &nbsp; $ java Main Multi -o x y    (It was used to generate data that we used to compare two models) 
 
