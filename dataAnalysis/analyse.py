@@ -1,7 +1,4 @@
 import sys, csv, math
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import figure
 
 testParams = {"cop":[0.04, 0.01, 0.02, 0.06, 0.08, 0.1],
             "agent":[0.7, 0.4, 0.5, 0.6, 0.8, 0.9],
@@ -14,12 +11,6 @@ default_test = {"cop":0.04,
             "vision":7,
             "legit":0.82,
             "MJT":30}
-
-variableDict = {"cop":"Initial cop density",
-            "agent":"Initial agent density",
-            "vision":"Vision distance",
-            "legit":"Legitimacy",
-            "MJT": "Max jail term"}
 
 options = ['cop', 'agent', 'vision', 'legit', 'MJT']
 sampleSize = 6
