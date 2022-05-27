@@ -59,39 +59,22 @@ Double click on the circle of the graph will give information about all turtles 
 
 
 ## Directory Structure
-'''
-.
-├── README.md
 
-├── analysisImage					Visualisation of our data.
-
-├── dataAnalysis
-
-│   └── analyse.py		Python functions used to analysing our data.
-
-├── dataSample.csv					Output file for debugging using GUI
-
-├── dataSamples
-
-│   ├── extension			The CSV files containing data of our research experiments 
-
-│   ├── java				The CSV files containing data of our model in model comparison experiments
-
-│   └── netlogo			The CSV files containing data of our model in model comparison experiments
-
-├── inputData						The unprocessed output file from NetLogo
-
-└── src								The directory containing our source code
-
-    ├── Agent.java
-
-    ├── Cop.java
-
-    ├── GUI.java
-
-    ├── Main.java
-
-    ├── Simulator.java
-
-    └── Turtle.java
-'''
+    .
+    ├── README.md
+    ├── analysisImage					Visualisation of our data.
+    ├── dataAnalysis
+    │   └── analyse.py		Python functions used to analysing our data.
+    ├── dataSample.csv					Output file for debugging using GUI
+    ├── dataSamples
+    │   ├── extension			The CSV files containing data of our research experiments 
+    │   ├── java				The CSV files containing data of our model in model comparison experiments
+    │   └── netlogo			The CSV files containing data of our model in model comparison experiments
+    ├── inputData						The unprocessed output file from NetLogo
+    └── src								The directory containing our source code
+        ├── Agent.java
+        ├── Cop.java
+        ├── GUI.java
+        ├── Main.java
+        ├── Simulator.java
+        └── Turtle.java
