@@ -4,7 +4,7 @@
 
 1. Open the terminal and go to the code folder.
 
-&nbsp; &nbsp; &nbsp; &nbsp; $ cd Rebellion/src
+&nbsp; &nbsp; &nbsp; &nbsp; $ cd src
 
 &nbsp; &nbsp; &nbsp; &nbsp; $ javac *.java
 
@@ -70,7 +70,7 @@ Double click on the circle of the graph will give information about all turtles 
     │   ├── extension                  #The CSV files containing data of our research experiments 
     │   ├── java                       #The CSV files containing data of our model in model comparison experiments
     │   └── netlogo                    #The CSV files containing data of our model in model comparison experiments
-    ├── inputData                      #The unprocessed output file from NetLogo
+    ├── inputData                      #The unprocessed output files from NetLogo
     └── src                            #The directory containing our source code
         ├── Agent.java
         ├── Cop.java
