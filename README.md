@@ -20,7 +20,12 @@
 
 &nbsp; &nbsp; &nbsp; &nbsp; $ java Main Multi -o x y    (It was used to generate data that we used to compare two models) 
 
+&nbsp; &nbsp; &nbsp; &nbsp; Its default save path is "dataSample/java/" and by default it will generate new output files and overwrite our exising data files.
+
 &nbsp; &nbsp; &nbsp; &nbsp; $ java Main Multi -e x y   (It was used to generate data that we used to analyze our research question) 
+
+&nbsp; &nbsp; &nbsp; &nbsp; Its default save path is "dataSample/extension/" and by default it will generate new output files and overwrite our exising data files.
+
 
 &nbsp; &nbsp; &nbsp; &nbsp; ‘x’ means how many times to run.
 
