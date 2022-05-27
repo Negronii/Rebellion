@@ -43,10 +43,10 @@ public class GUI {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                for (Point coord : simulator.map.keySet()) {
-                    if (simulator.map.get(coord).isEmpty()) continue;
+                for (Point point : simulator.map.keySet()) {
+                    if (simulator.map.get(point).isEmpty()) continue;
                     int size = 20;
-                    for (Turtle turtle : simulator.map.get(coord)) {
+                    for (Turtle turtle : simulator.map.get(point)) {
                         // set color for circles
                         if (turtle instanceof Cop) {
                             if (turtle.injureTerm <= 0) g.setColor(Color.blue);
@@ -61,11 +61,11 @@ public class GUI {
                             else g.setColor(Color.green);
                         }
                         // draw the shapes
-                        g.fillOval(20 * coord.x + 20 - size, 20 * coord.y
+                        g.fillOval(20 * point.x + 20 - size, 20 * point.y
                                 + 20 - size, size, size);
                         // draw the outlines
                         g.setColor(Color.black);
-                        g.drawOval(20 * coord.x + 20 - size, 20 * coord.y
+                        g.drawOval(20 * point.x + 20 - size, 20 * point.y
                                 + 20 - size, size, size);
                         size -= 3;
                     }
@@ -145,9 +145,8 @@ public class GUI {
 
         // create user input for number of runs and set update button rule
         nRun = new JTextField("1000");
-        ActionListener runTextListener = e -> {
-            nRunButton.setText("run " + nRun.getText() + " times");
-        };
+        ActionListener runTextListener = e -> nRunButton.setText("run " +
+                nRun.getText() + " times");
         nRun.addActionListener(runTextListener);
 
         // create run n times button and logic
@@ -169,9 +168,8 @@ public class GUI {
         // create save file button and its logic
         // the button to save file
         JButton saveFile = new JButton("save file");
-        ActionListener saveListener = e -> {
-            simulator.writeToCsv(fileName.getText());
-        };
+        ActionListener saveListener = e ->
+                simulator.writeToCsv(fileName.getText());
         saveFile.addActionListener(saveListener);
 
         // create sub-frame information bar

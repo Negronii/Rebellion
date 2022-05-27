@@ -4,7 +4,7 @@ import java.util.Objects;
 
 // main class to drive simulations
 // argument GUI to be GUI mode
-// arguments x y to be repeat x times y steps
+// arguments x y to be repeated x times y steps
 public class Main {
 
     // all experiment values, first is default and rest are candidates
