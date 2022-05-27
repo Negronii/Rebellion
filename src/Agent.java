@@ -1,17 +1,17 @@
 import java.awt.*;
+
 // The agents in simulation
 public class Agent extends Turtle {
     // the unique id of the agent
-    public final int id;
+    private final int id;
     // the risk aversion, value randomly lies between 0 and 1
-    public final double riskAversion = Simulator.random.nextDouble();
+    private final double riskAversion = Simulator.random.nextDouble();
     // the perceived hardship, value randomly lies between 0 and 1
-    public final double perceivedHardship = Simulator.random.nextDouble();
+    private final double perceivedHardship = Simulator.random.nextDouble();
     // whether the agent is currently active or not
     public boolean isActive;
     // how many days left before go to jail
     public int jailTerm;
-
 
     public Agent(int id, Point point, Simulator simulator) {
         super(point, simulator);
@@ -25,8 +25,6 @@ public class Agent extends Turtle {
 
     // determine behavior of the agent in this tick,
     public void determineBehavior() {
-        double grievance = perceivedHardship * (1 -
-                simulator.government_legitimacy);
         // the number of cops in vision
         double c = 0;
         // the number of actives in vision
@@ -41,8 +39,12 @@ public class Agent extends Turtle {
         // calculation details comes from netlogo library module Rebellion code
         double estimateArrestProbability = 1 - Math.exp(-simulator.k *
                 Math.floor(c / a));
-        isActive = (grievance - riskAversion * estimateArrestProbability >
+        isActive = (getGrievance() - riskAversion * estimateArrestProbability >
                 simulator.threshold);
+    }
+
+    public double getGrievance() {
+        return perceivedHardship * (1 - simulator.government_legitimacy);
     }
 
     @Override
@@ -68,9 +70,9 @@ public class Agent extends Turtle {
 
     @Override
     public String toString() {
-        return "Agent{" + "id=" + id + ", riskAversion=" + riskAversion + ", " +
-                "perceivedHardship=" + perceivedHardship + ", isActive=" +
-                isActive + ", jailTerm=" + jailTerm + ", point=" + point + ", " +
-                "injureTerm=" + injureTerm + '}';
+        return "Agent{" + "id=" + id + ", riskAversion=" + riskAversion + ", "
+                + "perceivedHardship=" + perceivedHardship + ", isActive=" +
+                isActive + ", jailTerm=" + jailTerm + ", point=" + point + ", "
+                + "injureTerm=" + injureTerm + '}';
     }
 }

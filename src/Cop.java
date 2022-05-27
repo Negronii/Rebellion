@@ -1,9 +1,10 @@
 import java.awt.*;
 import java.util.ArrayList;
+
 // the cops in simulation
 public class Cop extends Turtle {
     // unique id of the cop turtle
-    public final int id;
+    private final int id;
 
     public Cop(int id, Point point, Simulator simulator) {
         super(point, simulator);
@@ -22,7 +23,8 @@ public class Cop extends Turtle {
         // no active agents, do nothing
         if (actives.isEmpty()) return;
         // find a random targetActive
-        Agent targetActive = actives.get(Simulator.random.nextInt(actives.size()));
+        Agent targetActive = actives.get(Simulator.random.nextInt(
+                actives.size()));
         // go to the active's place
         simulator.map.get(point).remove(this);
         point = targetActive.point;
@@ -30,8 +32,7 @@ public class Cop extends Turtle {
         boolean fight = false;
         // extension case
         if (simulator.injure_extension) {
-            double targetGrievance = targetActive.perceivedHardship * (1 -
-                    simulator.government_legitimacy);
+            double targetGrievance = targetActive.getGrievance();
             // see if there is a fight
             if (Simulator.random.nextDouble() < targetGrievance) {
                 fight = true;
@@ -45,8 +46,8 @@ public class Cop extends Turtle {
                     for (Turtle turtle : simulator.map.get(point)) {
                         if (turtle instanceof Cop && turtle.injureTerm <= 0)
                             nCops++;
-                        else if (turtle instanceof Agent
-                                && ((Agent) turtle).isActive)
+                        else if (turtle instanceof Agent && ((Agent)
+                                turtle).isActive)
                             nActive++;
                     }
                 }
@@ -66,6 +67,12 @@ public class Cop extends Turtle {
             targetActive.jailTerm = Simulator.random.nextInt(
                     simulator.maxJailTerm + 1);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Cop{" + "id=" + id + ", point=" + point + ", injureTerm=" +
+                injureTerm + '}';
     }
 
     @Override
